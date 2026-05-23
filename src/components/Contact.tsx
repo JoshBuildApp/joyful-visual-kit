@@ -1,6 +1,12 @@
 import { useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
 
+// Destination inbox. Centralised so it's easy to swap or move to env var later.
+const CONTACT_EMAIL = 'guyavnaim5@gmail.com'
+
+// RFC-2822 lite — accepts common cases without false-rejecting valid addresses.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export function Contact() {
   const { toast } = useToast()
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
@@ -8,17 +14,52 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+
+    const name = formData.name.trim()
+    const email = formData.email.trim()
+    const message = formData.message.trim()
+
+    if (!name || !email || !message) {
       toast({ title: 'Please fill in all fields', variant: 'destructive' })
       return
     }
+    if (!EMAIL_RE.test(email)) {
+      toast({ title: 'That email doesn’t look right', variant: 'destructive' })
+      return
+    }
+
     setIsSubmitting(true)
-    // Simulate submission — connect to a backend to actually send
-    setTimeout(() => {
-      toast({ title: 'Message sent!', description: "I'll get back to you soon." })
-      setFormData({ name: '', email: '', message: '' })
-      setIsSubmitting(false)
-    }, 1000)
+
+    // Build a mailto: with the form contents pre-populated.
+    // The visitor's mail client opens; they confirm send. Mail arrives in
+    // CONTACT_EMAIL with the form fields formatted as the body.
+    const subject = `Portfolio inquiry — ${name}`
+    const body = [
+      `Name:    ${name}`,
+      `Email:   ${email}`,
+      '',
+      message,
+      '',
+      '—',
+      'Sent from the contact form on Guy Avnaim’s portfolio',
+    ].join('\n')
+
+    const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`
+
+    // Open the user's mail client. Use location.href so it works in every
+    // browser without popup-blocker quirks.
+    window.location.href = href
+
+    // Confirm + reset. We can't actually know if they sent it, but the form
+    // has done its job by handing off to their mail client.
+    toast({
+      title: 'Your mail client is opening',
+      description: `Pre-filled to ${CONTACT_EMAIL}. Click Send in your mail app to finish.`,
+    })
+    setFormData({ name: '', email: '', message: '' })
+    setIsSubmitting(false)
   }
 
   return (
@@ -107,8 +148,19 @@ export function Contact() {
                 disabled={isSubmitting}
                 className="w-full py-4 rounded-xl bg-foreground text-background font-black text-lg hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
+                {isSubmitting ? 'Opening mail…' : 'Send Message'}
               </button>
+
+              {/* Direct-email fallback for visitors with no configured mail client */}
+              <p className="text-center text-sm text-muted-foreground pt-2">
+                Or email me directly at{' '}
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="text-foreground font-medium border-b border-border hover:border-foreground transition-colors"
+                >
+                  {CONTACT_EMAIL}
+                </a>
+              </p>
             </form>
           </div>
         </div>
