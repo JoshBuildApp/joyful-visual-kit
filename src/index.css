@@ -455,6 +455,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Prevent horizontal scroll page-wide. Children like the hero video
+   crossfade (scale-110), iframe previews, and carousel indicators can
+   visually overflow their containers — this clamp keeps the page from
+   ever scrolling sideways on any viewport. */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 /* Performance optimizations */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

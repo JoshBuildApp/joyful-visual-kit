@@ -7,8 +7,11 @@ import { Footer } from '@/components/Footer'
 
 export default function Production() {
   return (
-    <div className="min-h-screen bg-background text-foreground" style={{ overflow: 'visible' }}>
-      <main className="relative" role="main" style={{ overflow: 'visible' }}>
+    // overflow-x: hidden prevents any wide child (carousel indicators,
+    // hero crossfade scale-110, etc.) from causing a horizontal scrollbar
+    // on mobile.
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <main className="relative overflow-x-hidden" role="main">
         <section id="hero" aria-label="Hero section">
           <Hero />
         </section>

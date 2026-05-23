@@ -86,7 +86,7 @@ export default function Gallery() {
   const imageCount = assets.filter((a) => a.kind === 'image').length
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Top nav — matches the Hero nav style on /production */}
       <header className="fixed top-0 left-0 right-0 w-full z-50">
         <div className="w-full px-6 sm:px-8 lg:px-12 py-4 bg-black/80 backdrop-blur-xl border-b border-white/10">
