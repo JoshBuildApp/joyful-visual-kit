@@ -29,7 +29,7 @@ const projects: Project[] = [
     description:
       'A full coaching platform for clubs and independent coaches. React + Supabase, end-to-end from product design and brand to backend and DevOps. Live and growing.',
     tag: 'Product · Live',
-    year: '2025',
+    year: '2026',
     status: 'Live',
     url: 'https://circloclub.com',
     embedLive: true,
@@ -42,7 +42,7 @@ const projects: Project[] = [
     description:
       'An end-to-end app for managing real-estate holdings — units, tenants, cashflow, documents. Hebrew-first UX, designed for owners running multiple properties as one operation.',
     tag: 'Product · Shipping',
-    year: '2025',
+    year: '2026',
     status: 'Shipping',
     accent: 'blue',
   },
@@ -53,7 +53,7 @@ const projects: Project[] = [
     description:
       'A distributed compute marketplace where contributors share idle GPU/CPU time and buyers pay for safe, allowlisted AI workloads — embeddings, image gen, transcription, chat — at a fraction of mainstream cloud cost. Israel-first.',
     tag: 'Platform · In development',
-    year: '2025',
+    year: '2026',
     status: 'In development',
     accent: 'purple',
   },
@@ -64,7 +64,7 @@ const projects: Project[] = [
     description:
       'A Reels season treating the twelve Olympian gods as fitness coaches. End-to-end creative direction: concept, scripts, AI generation, edit, sound — produced from a one-person studio across a full release schedule.',
     tag: 'Creative · Released',
-    year: '2025',
+    year: '2026',
     status: 'Released',
     accent: 'red',
   },

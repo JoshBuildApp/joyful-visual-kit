@@ -118,7 +118,7 @@ export default function Home() {
             name={<>Circlo</>}
             italic
             role="Coaching platform — product, design, code, brand"
-            year="2025 — Live"
+            year="2026 — Live"
             live
             href="https://circloclub.com"
             external
@@ -127,14 +127,14 @@ export default function Home() {
             n="02"
             name="Circlo Control"
             role="Analytics and manager tools for Circlo coaches"
-            year="2025 — In development"
+            year="2026 — In development"
           />
           <IndexRow
             n="03"
             name={<>Dira</>}
             italic
             role="Real-estate holdings & portfolio app"
-            year="2025 — Shipping"
+            year="2026 — Shipping"
           />
           <IndexRow
             n="04"
@@ -150,7 +150,7 @@ export default function Home() {
               </>
             }
             role="Creative direction & AI video — full Reels season"
-            year="2025 — Released"
+            year="2026 — Released"
             href="/production"
           />
           <IndexRow
