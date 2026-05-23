@@ -3,16 +3,17 @@
 export function Footer() {
   const aiTools = [
     'Runway Gen-4',
-    'Kling 2', 
     'Veo 3',
+    'Kling 2',
     'Higgsfield AI',
     'Hailuo Minimax 2',
     'Midjourney',
     'Leonardo AI',
     'Krea AI',
-    'Runway',
     'Suno AI',
-    'ElevenLabs'
+    'ElevenLabs',
+    'Claude',
+    'GPT'
   ]
 
   return (
@@ -23,43 +24,20 @@ export function Footer() {
           <div className="col-span-12 md:col-span-4">
             <div>
               <div className="font-bagel text-background text-3xl tracking-wider mb-4">
-                MOJJU
+                GUY AVNAIM
               </div>
               <p className="text-background/70 leading-relaxed mb-6">
-                Revolutionizing video production with intelligent AI that understands 
-                creativity, storytelling, and human emotion.
+                One-person studio in Tel Aviv. Music, AI video, and creative direction —
+                produced end-to-end. I treat AI tools as a serious production team.
               </p>
               {/* Social Media Icons */}
               <div className="flex items-center space-x-6">
-                {/* X (Twitter) */}
-                <a
-                  href="https://x.com/Mojjuai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:scale-110 gentle-animation cursor-pointer"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#E5E7EB">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                </a>
-
-                {/* TikTok */}
-                <a
-                  href="https://www.tiktok.com/@mojju.ai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:scale-110 gentle-animation cursor-pointer"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF0050">
-                    <path d="M19.321 5.562a5.122 5.122 0 0 1-.443-.258 6.228 6.228 0 0 1-1.137-.966c-.849-.936-1.315-2.117-1.315-3.338h-3.357v14.826c0 1.543-1.252 2.795-2.795 2.795s-2.795-1.252-2.795-2.795 1.252-2.795 2.795-2.795c.293 0 .576.045.843.13V9.804a6.67 6.67 0 0 0-.843-.054c-3.683 0-6.674 2.99-6.674 6.674s2.99 6.674 6.674 6.674 6.674-2.99 6.674-6.674V9.696a9.577 9.577 0 0 0 5.588 1.786V7.627c-1.319 0-2.54-.529-3.42-1.394a4.902 4.902 0 0 1-1.294-2.671z"/>
-                  </svg>
-                </a>
-
                 {/* Instagram */}
                 <a
-                  href="https://www.instagram.com/mojju.ai"
+                  href="https://instagram.com/guy.avnaim"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Instagram"
                   className="hover:scale-110 gentle-animation cursor-pointer"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="url(#instagram-gradient)">
@@ -74,17 +52,26 @@ export function Footer() {
                   </svg>
                 </a>
 
-                {/* LinkedIn */}
+                {/* Email */}
                 <a
-                  href="https://linkedin.com/company/mojju"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:guyavnaim5@gmail.com"
+                  aria-label="Email"
                   className="hover:scale-110 gentle-animation cursor-pointer"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#0077B5">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
                   </svg>
                 </a>
+
+                {/* LinkedIn — coming soon */}
+                <span
+                  aria-label="LinkedIn — coming soon"
+                  title="LinkedIn — coming soon"
+                  className="opacity-40 cursor-default italic text-sm text-background/70"
+                >
+                  LinkedIn — soon
+                </span>
               </div>
             </div>
           </div>
@@ -92,12 +79,12 @@ export function Footer() {
           {/* Tools We Use Section */}
           <div className="col-span-12 md:col-span-8">
             <div>
-              <h4 className="font-black text-2xl text-background mb-4">TOOLS WE USE</h4>
-              
+              <h4 className="font-black text-2xl text-background mb-4">TOOLS I USE</h4>
+
               {/* AI Tools Description */}
               <p className="text-background/70 text-base mb-8 leading-relaxed">
-                We leverage the latest AI technology to deliver cutting-edge video production. 
-                Our toolkit combines the best generative AI models for video, audio, and visual content creation.
+                I treat AI tools as a serious production team. The toolkit below covers video, audio,
+                imagery, and language — combined into pipelines that let one operator ship at studio scale.
               </p>
               
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -118,10 +105,10 @@ export function Footer() {
         <div className="border-t border-background/20 pt-8 mt-16">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-background/70 mb-4 md:mb-0">
-              © 2025 MOJJU. All rights reserved.
+              © MMXXVI · GUY AVNAIM · ALL RIGHTS RESERVED
             </div>
             <div className="text-sm text-background/70">
-              2847 HIGHLAND AVE. SUITE 310 BIRMINGHAM 35205, AL, USA
+              TEL AVIV · 32.08°N · 34.78°E
             </div>
           </div>
         </div>

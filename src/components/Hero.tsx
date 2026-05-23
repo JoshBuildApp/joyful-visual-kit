@@ -2,13 +2,16 @@
 
 import { motion } from 'framer-motion'
 import { Volume2, VolumeX, Menu, X } from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { HeroVideoSlideshow, heroClips } from './HeroVideoSlideshow'
+import { HeroTitleCarousel } from './HeroTitleCarousel'
 
 export function Hero() {
+  const navigate = useNavigate()
   const [isMuted, setIsMuted] = useState(true)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
 
   // Scroll detection
   useEffect(() => {
@@ -20,48 +23,6 @@ export function Hero() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
-  // Ensure video is muted immediately on load to prevent any audio
-  useEffect(() => {
-    if (videoRef.current) {
-      console.log('Video element found, setting up...')
-      videoRef.current.volume = 0
-      videoRef.current.muted = true
-      videoRef.current.defaultMuted = true
-      
-      // Add event listeners for debugging
-      videoRef.current.addEventListener('loadstart', () => console.log('Video: loadstart'))
-      videoRef.current.addEventListener('loadedmetadata', () => console.log('Video: loadedmetadata'))
-      videoRef.current.addEventListener('canplay', () => console.log('Video: canplay'))
-      videoRef.current.addEventListener('playing', () => console.log('Video: playing'))
-      videoRef.current.addEventListener('error', (e) => console.error('Video error:', e))
-      
-      // Force mute on play
-      videoRef.current.addEventListener('play', () => {
-        if (videoRef.current) {
-          console.log('Video play event fired')
-          videoRef.current.muted = isMuted
-          videoRef.current.volume = isMuted ? 0 : 0.7
-        }
-      })
-      
-      // Try to play the video
-      const playPromise = videoRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => console.log('Video autoplay successful'))
-          .catch(error => console.error('Video autoplay failed:', error))
-      }
-    }
-  }, [])
-
-  // Update video mute state when isMuted changes
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = isMuted
-      videoRef.current.volume = isMuted ? 0 : 0.7
-    }
-  }, [isMuted])
 
   // Handle body scroll lock when mobile menu is open
   useEffect(() => {
@@ -98,18 +59,8 @@ export function Hero() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
-      {/* MASSIVE VIDEO - Takes up 95% of space */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover scale-110"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src="https://mojli.s3.us-east-2.amazonaws.com/Mojli+Website+upscaled+(12mb).webm" type="video/webm" />
-        Your browser does not support the video tag.
-      </video>
+      {/* Hero video — crossfading slideshow of Guy's clips (see public/hero/) */}
+      <HeroVideoSlideshow sources={heroClips} muted={isMuted} />
 
       {/* Full-Width Navbar */}
       <motion.nav
@@ -130,11 +81,11 @@ export function Hero() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center cursor-pointer"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-              }}
+              onClick={() => navigate('/')}
+              role="link"
+              aria-label="Back to portfolio home"
             >
-              <span className="font-bagel text-white text-xl tracking-wider">MOJJU</span>
+              <span className="font-bagel text-white text-xl tracking-wider">GUY AVNAIM</span>
             </motion.div>
 
             {/* Navigation Menu */}
@@ -151,20 +102,20 @@ export function Hero() {
               >
                 Process
               </a>
-              <a 
-                href="#services" 
+              <a
+                href="#services"
                 className="text-white hover:text-white/80 font-medium gentle-animation hover:scale-105"
               >
                 Capabilities
               </a>
-              <a 
-                href="#team" 
+              <a
+                href="/gallery"
                 className="text-white hover:text-white/80 font-medium gentle-animation hover:scale-105"
               >
-                Team
+                Gallery
               </a>
-              <a 
-                href="#contact" 
+              <a
+                href="#contact"
                 className="text-white hover:text-white/80 font-medium gentle-animation hover:scale-105"
               >
                 Contact
@@ -271,12 +222,12 @@ export function Hero() {
               >
                 Capabilities
               </a>
-              <a 
-                href="#team" 
+              <a
+                href="/gallery"
                 className="mobile-menu-link px-4 py-3 hover:text-white/80 hover:bg-white/10 rounded-lg gentle-animation font-medium text-lg active:bg-white/20"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Team
+                Gallery
               </a>
               <a 
                 href="#contact" 
@@ -314,11 +265,7 @@ export function Hero() {
         className="absolute bottom-12 left-6 sm:left-8 lg:left-12 z-40"
       >
         <div className="max-w-2xl">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight text-white">
-            <span className="block">AI FILM</span>
-            <span className="block">PRODUCTION</span>
-            <span className="block">WITHOUT LIMITS</span>
-          </h1>
+          <HeroTitleCarousel />
         </div>
       </motion.div>
 

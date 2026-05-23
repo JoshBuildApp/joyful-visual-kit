@@ -15,7 +15,7 @@ export function Contact() {
     setIsSubmitting(true)
     // Simulate submission — connect to a backend to actually send
     setTimeout(() => {
-      toast({ title: 'Message sent!', description: "We'll get back to you soon." })
+      toast({ title: 'Message sent!', description: "I'll get back to you soon." })
       setFormData({ name: '', email: '', message: '' })
       setIsSubmitting(false)
     }, 1000)
@@ -35,11 +35,11 @@ export function Contact() {
           </div>
           
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-8">
-            <span className="block mb-2">Ready to Light Up the Screen?</span>
+            <span className="block mb-2">Let's build something.</span>
           </h2>
-          
+
           <p className="text-2xl lg:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Tell us about your project and we'll get back to you with a plan to bring your vision to cinematic reality
+            Tell me about your project — music, AI video, creative direction. I take it from blank page to release.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export function Contact() {
                     Get In Touch
                   </h3>
                   <p className="text-muted-foreground">
-                    Fill out the form and we'll respond within 24 hours
+                    Fill out the form and I'll respond within 24 hours
                   </p>
                 </div>
                 <div className="hidden sm:flex items-center space-x-2">
@@ -99,7 +99,7 @@ export function Contact() {
                   value={formData.message}
                   onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                   className="w-full px-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 transition-all resize-none"
-                  placeholder="Tell us about your project..."
+                  placeholder="Tell me about your project..."
                 />
               </div>
               <button
@@ -122,7 +122,7 @@ export function Contact() {
               </div>
               <h4 className="font-black text-foreground mb-2">Project Discussion</h4>
               <p className="text-muted-foreground text-sm">
-                Share your vision and requirements with our team
+                Share your vision and requirements directly with me — no account managers in between.
               </p>
             </div>
             
