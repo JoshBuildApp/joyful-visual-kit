@@ -4,12 +4,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 /**
- * Gallery page — auto-indexes everything in src/assets/gallery/.
+ * Gallery page — auto-indexes everything in src/assets/gallery/{subject}/.
  *
  * Workflow:
- *  1. Drop video / image files into ~/Desktop/gallery/
- *  2. Run `npm run sync-gallery` (copies them into src/assets/gallery/)
- *  3. Vite picks them up automatically — no code changes needed.
+ *  1. Drop video / image files into ~/Desktop/gallery/{sports,landscape,
+ *     people,community}/ (or any subfolder you like — it becomes a filter).
+ *  2. Run `npm run sync-gallery` (mirrors the folder tree into
+ *     src/assets/gallery/).
+ *  3. Vite picks them up automatically via import.meta.glob — no code
+ *     changes needed. Files at the root (no subfolder) become
+ *     "uncategorized" and only appear under "All".
  *
  * Supported extensions: mp4, webm, mov, jpg, jpeg, png, webp, gif, avif
  */
@@ -20,17 +24,31 @@ type AssetEntry = {
   kind: AssetKind
   /** Filename without extension, used as a caption. */
   name: string
+  /** Lowercased subfolder name; null when the file sits at the gallery root. */
+  subject: string | null
 }
 
+// Match both root-level files and one level of subfolder (e.g. sports/x.jpg).
 const videoModules = import.meta.glob(
-  '../assets/gallery/*.{mp4,webm,mov,MP4,WEBM,MOV}',
+  '../assets/gallery/**/*.{mp4,webm,mov,MP4,WEBM,MOV}',
   { eager: true, query: '?url', import: 'default' },
 ) as Record<string, string>
 
 const imageModules = import.meta.glob(
-  '../assets/gallery/*.{jpg,jpeg,png,webp,gif,avif,JPG,JPEG,PNG,WEBP,GIF,AVIF}',
+  '../assets/gallery/**/*.{jpg,jpeg,png,webp,gif,avif,JPG,JPEG,PNG,WEBP,GIF,AVIF}',
   { eager: true, query: '?url', import: 'default' },
 ) as Record<string, string>
+
+/**
+ * Parse `../assets/gallery/sports/match.mp4` → {subject: "sports", file: "match.mp4"}.
+ * Returns subject=null when the file is at the gallery root.
+ */
+function parsePath(path: string): { subject: string | null; file: string } {
+  const rel = path.replace(/^.*\/assets\/gallery\//, '')
+  const parts = rel.split('/')
+  if (parts.length === 1) return { subject: null, file: parts[0] }
+  return { subject: parts[0].toLowerCase(), file: parts.slice(1).join('/') }
+}
 
 function moduleToEntries(
   mods: Record<string, string>,
@@ -38,13 +56,13 @@ function moduleToEntries(
 ): AssetEntry[] {
   return Object.entries(mods)
     .map(([path, src]) => {
-      const file = path.split('/').pop() ?? path
+      const { subject, file } = parsePath(path)
       const name = file
         .replace(/\.[^.]+$/, '')
         .replace(/^\d+[_-]+/, '')
         .replace(/[-_]+/g, ' ')
         .trim()
-      return { src, kind, name }
+      return { src, kind, name, subject }
     })
     .sort((a, b) => a.name.localeCompare(b.name))
 }
@@ -54,7 +72,24 @@ const assets: AssetEntry[] = [
   ...moduleToEntries(imageModules, 'image'),
 ]
 
-type Filter = 'all' | 'video' | 'image'
+// The 4 subjects we always surface as filter pills (even when empty).
+// Order is the order they render in.
+const ALWAYS_ON_SUBJECTS = ['sports', 'landscape', 'people', 'community'] as const
+
+// Any extra subfolder the user creates beyond the 4 above also gets a pill.
+const discoveredExtras = Array.from(
+  new Set(
+    assets
+      .map((a) => a.subject)
+      .filter(
+        (s): s is string => s !== null && !ALWAYS_ON_SUBJECTS.includes(s as (typeof ALWAYS_ON_SUBJECTS)[number]),
+      ),
+  ),
+).sort()
+
+const SUBJECTS: string[] = [...ALWAYS_ON_SUBJECTS, ...discoveredExtras]
+
+type Filter = 'all' | (typeof SUBJECTS)[number] | string
 
 export default function Gallery() {
   const navigate = useNavigate()
@@ -62,7 +97,9 @@ export default function Gallery() {
   const [filter, setFilter] = useState<Filter>('all')
 
   const filtered =
-    filter === 'all' ? assets : assets.filter((a) => a.kind === filter)
+    filter === 'all'
+      ? assets
+      : assets.filter((a) => a.subject === filter)
 
   // Lightbox keyboard nav
   useEffect(() => {
@@ -82,8 +119,11 @@ export default function Gallery() {
     return () => window.removeEventListener('keydown', onKey)
   }, [activeIndex, filtered.length])
 
-  const videoCount = assets.filter((a) => a.kind === 'video').length
-  const imageCount = assets.filter((a) => a.kind === 'image').length
+  // Counts per subject, used in the filter pills
+  const subjectCounts: Record<string, number> = { all: assets.length }
+  for (const s of SUBJECTS) {
+    subjectCounts[s] = assets.filter((a) => a.subject === s).length
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -159,37 +199,34 @@ export default function Gallery() {
             </p>
           </div>
 
-          {/* Filter pills */}
-          {assets.length > 0 && (
-            <div
-              role="tablist"
-              aria-label="Filter gallery"
-              className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-16"
-            >
+          {/* Subject filter pills — always visible so subjects with zero
+              items still surface as planned categories (counts go to 0). */}
+          <div
+            role="tablist"
+            aria-label="Filter gallery by subject"
+            className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-16"
+          >
+            <FilterPill
+              active={filter === 'all'}
+              onClick={() => setFilter('all')}
+              label="All"
+              count={subjectCounts.all}
+            />
+            {SUBJECTS.map((s) => (
               <FilterPill
-                active={filter === 'all'}
-                onClick={() => setFilter('all')}
-                label="All"
-                count={assets.length}
+                key={s}
+                active={filter === s}
+                onClick={() => setFilter(s)}
+                label={s.charAt(0).toUpperCase() + s.slice(1)}
+                count={subjectCounts[s] ?? 0}
+                disabled={(subjectCounts[s] ?? 0) === 0}
               />
-              <FilterPill
-                active={filter === 'video'}
-                onClick={() => setFilter('video')}
-                label="Videos"
-                count={videoCount}
-              />
-              <FilterPill
-                active={filter === 'image'}
-                onClick={() => setFilter('image')}
-                label="Images"
-                count={imageCount}
-              />
-            </div>
-          )}
+            ))}
+          </div>
 
           {/* Grid */}
           {filtered.length === 0 ? (
-            <EmptyState />
+            <EmptyState subject={filter === 'all' ? undefined : filter} />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
               {filtered.map((asset, i) => (
@@ -245,23 +282,29 @@ function FilterPill({
   onClick,
   label,
   count,
+  disabled,
 }: {
   active: boolean
   onClick: () => void
   label: string
   count: number
+  disabled?: boolean
 }) {
+  const base = 'px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300'
+  const className = active
+    ? `${base} bg-foreground text-background`
+    : disabled
+    ? `${base} bg-card clean-border text-muted-foreground/40 cursor-not-allowed`
+    : `${base} bg-card clean-border text-muted-foreground hover:text-foreground`
   return (
     <button
       type="button"
       role="tab"
       aria-selected={active}
+      aria-disabled={disabled || undefined}
+      disabled={disabled}
       onClick={onClick}
-      className={
-        active
-          ? 'px-5 py-2.5 rounded-full text-sm font-medium bg-foreground text-background transition-all duration-300'
-          : 'px-5 py-2.5 rounded-full text-sm font-medium bg-card clean-border text-muted-foreground hover:text-foreground transition-all duration-300'
-      }
+      className={className}
     >
       {label} <span className="opacity-50">({count})</span>
     </button>
@@ -301,11 +344,16 @@ function GalleryCard({
         />
       )}
 
-      {/* Type chip */}
-      <div className="absolute top-4 left-4">
+      {/* Type + subject chips */}
+      <div className="absolute top-4 left-4 flex gap-2">
         <span className="glass-effect rounded-xl px-3 py-1 text-xs font-medium text-white backdrop-blur-md uppercase tracking-wider">
           {asset.kind}
         </span>
+        {asset.subject && (
+          <span className="glass-effect rounded-xl px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-md uppercase tracking-wider">
+            {asset.subject}
+          </span>
+        )}
       </div>
 
       {/* Caption — appears on hover */}
@@ -318,25 +366,27 @@ function GalleryCard({
   )
 }
 
-function EmptyState() {
+function EmptyState({ subject }: { subject?: string }) {
   return (
     <div className="max-w-2xl mx-auto bg-card clean-border rounded-3xl p-12 text-center elevated-shadow">
       <div className="w-12 h-12 bg-accent-emerald/10 rounded-full flex items-center justify-center mx-auto mb-6">
         <div className="w-6 h-6 bg-accent-emerald rounded-full animate-pulse" />
       </div>
       <h3 className="text-2xl font-bold text-foreground mb-3">
-        Nothing in the gallery yet
+        {subject
+          ? `Nothing in ${subject.charAt(0).toUpperCase() + subject.slice(1)} yet`
+          : 'Nothing in the gallery yet'}
       </h3>
       <p className="text-muted-foreground leading-relaxed mb-4">
         Drop video or image files into{' '}
         <code className="bg-background px-2 py-1 rounded text-sm">
-          ~/Desktop/gallery/
+          ~/Desktop/gallery/{subject ?? '{sports,landscape,people,community}'}/
         </code>{' '}
         and run{' '}
         <code className="bg-background px-2 py-1 rounded text-sm">
           npm run sync-gallery
-        </code>{' '}
-        to add them.
+        </code>
+        .
       </p>
       <p className="text-sm text-muted-foreground">
         Supported: <code>mp4 webm mov jpg jpeg png webp gif avif</code>

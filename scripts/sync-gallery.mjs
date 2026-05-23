@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 /**
- * sync-gallery — copy media files from ~/Desktop/gallery/ into the project's
- * src/assets/gallery/ folder so Vite picks them up in the /gallery page.
+ * sync-gallery — mirror ~/Desktop/gallery/ into src/assets/gallery/ so the
+ * /gallery page picks up new media via Vite's import.meta.glob.
  *
  * Run with: npm run sync-gallery
  *
  * Behavior:
- *   - Mirrors the Desktop folder into the project folder (one-way copy).
- *   - Files removed from Desktop are also removed from the project folder
- *     (mirror semantics) unless --no-prune is passed.
- *   - Only files with supported extensions are copied (videos + images).
- *   - .gitkeep is always preserved in the project folder.
+ *   - Mirrors top-level files (uncategorized).
+ *   - Mirrors one level of subdirectories — each subdir is treated as a
+ *     subject category (e.g. sports / landscape / people / community).
+ *   - Files removed from Desktop are pruned from the project folder
+ *     unless --no-prune is passed. .gitkeep is always preserved.
+ *   - Only files with supported extensions are copied.
  */
 import { mkdir, readdir, copyFile, stat, unlink } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { homedir } from 'node:os'
-import { join, extname, basename } from 'node:path'
+import { join, extname, basename, relative } from 'node:path'
 
 const SUPPORTED = new Set([
   '.mp4', '.webm', '.mov',
@@ -26,10 +27,40 @@ const SRC = process.env.GALLERY_SRC || join(homedir(), 'Desktop', 'gallery')
 const DEST = new URL('../src/assets/gallery/', import.meta.url).pathname
 const PRUNE = !process.argv.includes('--no-prune')
 
+/**
+ * Recursively walk a directory one level deep. Returns objects with the
+ * relative path inside SRC, so "sports/match.mp4" stays "sports/match.mp4".
+ */
+async function listMedia(dir) {
+  const entries = await readdir(dir, { withFileTypes: true })
+  const results = []
+  for (const e of entries) {
+    if (e.name.startsWith('.')) continue
+    const full = join(dir, e.name)
+    if (e.isDirectory()) {
+      // One level deep — subjects directly under gallery/
+      const inner = await readdir(full, { withFileTypes: true })
+      for (const f of inner) {
+        if (f.name.startsWith('.')) continue
+        if (!f.isFile()) continue
+        if (!SUPPORTED.has(extname(f.name).toLowerCase())) continue
+        results.push({
+          rel: join(e.name, f.name),
+          subject: e.name,
+        })
+      }
+    } else if (e.isFile()) {
+      if (SUPPORTED.has(extname(e.name).toLowerCase())) {
+        results.push({ rel: e.name, subject: null })
+      }
+    }
+  }
+  return results
+}
+
 async function main() {
   if (!existsSync(SRC)) {
     console.log(`📁 Source folder doesn't exist yet: ${SRC}`)
-    console.log('   Create it and drop your videos/images there.')
     await mkdir(SRC, { recursive: true })
     console.log('   ✓ Created empty source folder for you.')
     return
@@ -37,55 +68,63 @@ async function main() {
 
   await mkdir(DEST, { recursive: true })
 
-  const sourceFiles = (await readdir(SRC)).filter((f) =>
-    SUPPORTED.has(extname(f).toLowerCase()),
-  )
-  const sourceSet = new Set(sourceFiles)
+  const sourceItems = await listMedia(SRC)
+  const sourceSet = new Set(sourceItems.map((i) => i.rel))
 
   let copied = 0
   let skipped = 0
-  for (const file of sourceFiles) {
-    const src = join(SRC, file)
-    const dst = join(DEST, file)
+  for (const item of sourceItems) {
+    const src = join(SRC, item.rel)
+    const dst = join(DEST, item.rel)
+    await mkdir(join(DEST, item.subject ?? ''), { recursive: true })
     try {
       const [s, d] = await Promise.all([
         stat(src),
         existsSync(dst) ? stat(dst) : Promise.resolve(null),
       ])
-      // Skip if dest exists and is newer-or-equal AND same size
       if (d && d.size === s.size && d.mtimeMs >= s.mtimeMs) {
         skipped++
         continue
       }
       await copyFile(src, dst)
-      console.log(`  + ${file} (${formatBytes(s.size)})`)
+      console.log(`  + ${item.rel} (${formatBytes(s.size)})`)
       copied++
     } catch (err) {
-      console.error(`  ! ${file}: ${err.message}`)
+      console.error(`  ! ${item.rel}: ${err.message}`)
     }
   }
 
+  // Prune: any media file in DEST not in source set gets removed.
   let pruned = 0
   if (PRUNE) {
-    const destFiles = (await readdir(DEST)).filter((f) =>
-      SUPPORTED.has(extname(f).toLowerCase()),
-    )
-    for (const file of destFiles) {
-      if (!sourceSet.has(file) && basename(file) !== '.gitkeep') {
-        await unlink(join(DEST, file))
-        console.log(`  - ${file}`)
+    const destItems = await listMedia(DEST)
+    for (const item of destItems) {
+      if (!sourceSet.has(item.rel)) {
+        await unlink(join(DEST, item.rel))
+        console.log(`  - ${item.rel}`)
         pruned++
       }
     }
   }
 
+  // Summary, grouped by subject for clarity
+  const bySubject = sourceItems.reduce((acc, i) => {
+    const k = i.subject ?? '(uncategorized)'
+    acc[k] = (acc[k] ?? 0) + 1
+    return acc
+  }, {})
   console.log(
     `\n✓ Synced gallery. Copied ${copied}, skipped ${skipped}${
       PRUNE ? `, pruned ${pruned}` : ''
-    }. Total in gallery: ${sourceFiles.length}.`,
+    }. Total: ${sourceItems.length}.`,
   )
-  if (sourceFiles.length === 0) {
-    console.log(`  (Drop files into ${SRC} and re-run.)`)
+  if (Object.keys(bySubject).length > 0) {
+    for (const [k, v] of Object.entries(bySubject).sort()) {
+      console.log(`    ${k}: ${v}`)
+    }
+  }
+  if (sourceItems.length === 0) {
+    console.log(`  (Drop files into ${SRC}/{sports,landscape,people,community}/ and re-run.)`)
   }
 }
 
