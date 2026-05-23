@@ -133,7 +133,7 @@ export default function Gallery() {
           <div className="flex items-center justify-between">
             <button
               type="button"
-              onClick={() => navigate('/production')}
+              onClick={() => navigate('/')}
               className="font-bagel text-white text-xl tracking-wider cursor-pointer hover:scale-105 transition-transform"
               aria-label="Back to portfolio"
             >
@@ -142,19 +142,19 @@ export default function Gallery() {
 
             <nav className="hidden md:flex items-center space-x-8">
               <Link
-                to="/production#portfolio"
+                to="/#portfolio"
                 className="text-white hover:text-white/80 font-medium transition-all hover:scale-105"
               >
                 Work
               </Link>
               <Link
-                to="/production#about"
+                to="/#about"
                 className="text-white hover:text-white/80 font-medium transition-all hover:scale-105"
               >
                 Process
               </Link>
               <Link
-                to="/production#services"
+                to="/#services"
                 className="text-white hover:text-white/80 font-medium transition-all hover:scale-105"
               >
                 Capabilities
@@ -167,7 +167,7 @@ export default function Gallery() {
                 Gallery
               </Link>
               <Link
-                to="/production#contact"
+                to="/#contact"
                 className="text-white hover:text-white/80 font-medium transition-all hover:scale-105"
               >
                 Contact
@@ -265,7 +265,7 @@ export default function Gallery() {
               © MMXXVI · GUY AVNAIM · TEL AVIV
             </span>
             <Link
-              to="/production"
+              to="/"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               ← Back to portfolio

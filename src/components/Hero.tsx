@@ -3,12 +3,10 @@
 import { motion } from 'framer-motion'
 import { Volume2, VolumeX, Menu, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { HeroVideoSlideshow, heroClips } from './HeroVideoSlideshow'
 import { HeroTitleCarousel } from './HeroTitleCarousel'
 
 export function Hero() {
-  const navigate = useNavigate()
   const [isMuted, setIsMuted] = useState(true)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -77,13 +75,13 @@ export function Hero() {
           }`}
         >
           <div className="flex items-center justify-between">
-            {/* Logo */}
+            {/* Logo — scroll to top (we're already on the only main page) */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center cursor-pointer"
-              onClick={() => navigate('/')}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               role="link"
-              aria-label="Back to portfolio home"
+              aria-label="Back to top"
             >
               <span className="font-bagel text-white text-xl tracking-wider">GUY AVNAIM</span>
             </motion.div>
