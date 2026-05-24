@@ -17,21 +17,21 @@ export function Footer() {
   ]
 
   return (
-    <footer className="relative py-20 bg-foreground text-background">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-12 gap-12">
+    <footer className="relative py-12 sm:py-20 bg-foreground text-background">
+      <div className="container mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-12 gap-10 md:gap-12">
           {/* Logo and Description */}
           <div className="col-span-12 md:col-span-4">
             <div>
-              <div className="font-bagel text-background text-3xl tracking-wider mb-4">
+              <div className="font-bagel text-background text-2xl sm:text-3xl tracking-wider mb-4 break-words">
                 GUY AVNAIM
               </div>
-              <p className="text-background/70 leading-relaxed mb-6">
+              <p className="text-background/70 text-sm sm:text-base leading-relaxed mb-6">
                 One-person studio in Tel Aviv. Music, AI video, and creative direction —
                 produced end-to-end. I treat AI tools as a serious production team.
               </p>
               {/* Social Media Icons */}
-              <div className="flex items-center space-x-6">
+              <div className="flex items-center flex-wrap gap-x-6 gap-y-3">
                 {/* Instagram */}
                 <a
                   href="https://instagram.com/guy.avnaim"
@@ -79,15 +79,15 @@ export function Footer() {
           {/* Tools We Use Section */}
           <div className="col-span-12 md:col-span-8">
             <div>
-              <h4 className="font-black text-2xl text-background mb-4">TOOLS I USE</h4>
+              <h4 className="font-black text-xl sm:text-2xl text-background mb-4">TOOLS I USE</h4>
 
               {/* AI Tools Description */}
-              <p className="text-background/70 text-base mb-8 leading-relaxed">
+              <p className="text-background/70 text-sm sm:text-base mb-8 leading-relaxed">
                 I treat AI tools as a serious production team. The toolkit below covers video, audio,
                 imagery, and language — combined into pipelines that let one operator ship at studio scale.
               </p>
               
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 {aiTools.map((tool, index) => (
                   <div
                     key={tool}
@@ -102,12 +102,12 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar - Simplified */}
-        <div className="border-t border-background/20 pt-8 mt-16">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-sm text-background/70 mb-4 md:mb-0">
+        <div className="border-t border-background/20 pt-6 sm:pt-8 mt-10 sm:mt-16">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-0">
+            <div className="text-xs sm:text-sm text-background/70">
               © MMXXVI · GUY AVNAIM · ALL RIGHTS RESERVED
             </div>
-            <div className="text-sm text-background/70">
+            <div className="text-xs sm:text-sm text-background/70">
               TEL AVIV · 32.08°N · 34.78°E
             </div>
           </div>
