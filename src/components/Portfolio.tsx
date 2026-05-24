@@ -72,6 +72,18 @@ const projects: Project[] = [
     status: 'Released',
     accent: 'red',
   },
+  {
+    id: 'samuels',
+    name: 'Samuels',
+    tagline: 'Jewelry brand — co-founded, art-directed, social',
+    description:
+      'A jewelry brand I co-founded with my father in 2024. Directed the shooting days, assembled the photography team, and built the social presence from the ground up. @samuels_jewelry_',
+    tag: 'Brand · Live',
+    year: '2024',
+    status: 'Live',
+    url: 'https://instagram.com/samuels_jewelry_',
+    accent: 'emerald',
+  },
 ]
 
 export function Portfolio() {
