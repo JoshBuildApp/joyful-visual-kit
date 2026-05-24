@@ -1,6 +1,8 @@
 'use client'
 
 import { ExternalLink } from 'lucide-react'
+import diraPreview from '@/assets/projects/dira.webp'
+import nightshiftPreview from '@/assets/projects/nightshift.webp'
 
 type Project = {
   id: string
@@ -45,6 +47,7 @@ const projects: Project[] = [
     year: '2026',
     status: 'Shipping',
     accent: 'blue',
+    previewImage: diraPreview,
   },
   {
     id: 'nightshift',
@@ -56,6 +59,7 @@ const projects: Project[] = [
     year: '2026',
     status: 'In development',
     accent: 'purple',
+    previewImage: nightshiftPreview,
   },
   {
     id: 'coach-of-the-gods',
