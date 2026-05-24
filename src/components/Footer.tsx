@@ -17,16 +17,16 @@ export function Footer() {
   ]
 
   return (
-    <footer className="relative py-12 sm:py-20 bg-foreground text-background">
-      <div className="container mx-auto px-5 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-12 gap-10 md:gap-12">
+    <footer className="relative w-full py-12 sm:py-20 bg-foreground text-background overflow-hidden">
+      <div className="w-full max-w-screen-xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 min-w-0">
           {/* Logo and Description */}
-          <div className="col-span-12 md:col-span-4">
-            <div>
+          <div className="md:col-span-4 min-w-0">
+            <div className="min-w-0 max-w-full">
               <div className="font-bagel text-background text-2xl sm:text-3xl tracking-wider mb-4 break-words">
                 GUY AVNAIM
               </div>
-              <p className="text-background/70 text-sm sm:text-base leading-relaxed mb-6">
+              <p className="max-w-full text-background/70 text-sm sm:text-base leading-relaxed mb-6 break-words [overflow-wrap:anywhere]">
                 One-person studio in Tel Aviv. Music, AI video, and creative direction —
                 produced end-to-end. I treat AI tools as a serious production team.
               </p>
@@ -77,21 +77,21 @@ export function Footer() {
           </div>
 
           {/* Tools We Use Section */}
-          <div className="col-span-12 md:col-span-8">
-            <div>
+          <div className="md:col-span-8 min-w-0">
+            <div className="min-w-0 max-w-full">
               <h4 className="font-black text-xl sm:text-2xl text-background mb-4">TOOLS I USE</h4>
 
               {/* AI Tools Description */}
-              <p className="text-background/70 text-sm sm:text-base mb-8 leading-relaxed">
+              <p className="max-w-full text-background/70 text-sm sm:text-base mb-8 leading-relaxed break-words [overflow-wrap:anywhere]">
                 I treat AI tools as a serious production team. The toolkit below covers video, audio,
                 imagery, and language — combined into pipelines that let one operator ship at studio scale.
               </p>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 min-w-0">
                 {aiTools.map((tool, index) => (
                   <div
                     key={tool}
-                    className="text-background/80 hover:text-background gentle-animation text-sm font-medium"
+                    className="min-w-0 text-background/80 hover:text-background gentle-animation text-sm font-medium break-words"
                   >
                     {tool}
                   </div>
