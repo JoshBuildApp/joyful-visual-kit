@@ -13,7 +13,8 @@ export function Footer() {
     'Suno AI',
     'ElevenLabs',
     'Claude',
-    'GPT'
+    'GPT',
+    'Seedance'
   ]
 
   return (

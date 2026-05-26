@@ -3,6 +3,8 @@
 import { ExternalLink } from 'lucide-react'
 import diraPreview from '@/assets/projects/dira.webp'
 import nightshiftPreview from '@/assets/projects/nightshift.webp'
+import coachOfTheGodsPreview from '@/assets/projects/coach-of-the-gods.webp'
+import samuelsPreview from '@/assets/projects/samuels.webp'
 
 type Project = {
   id: string
@@ -71,6 +73,7 @@ const projects: Project[] = [
     year: '2026',
     status: 'Released',
     accent: 'red',
+    previewImage: coachOfTheGodsPreview,
   },
   {
     id: 'samuels',
@@ -83,6 +86,7 @@ const projects: Project[] = [
     status: 'Live',
     url: 'https://instagram.com/samuels_jewelry_',
     accent: 'emerald',
+    previewImage: samuelsPreview,
   },
 ]
 
