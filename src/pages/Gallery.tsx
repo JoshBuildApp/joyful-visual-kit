@@ -163,14 +163,13 @@ export default function Gallery() {
               label="All"
               count={subjectCounts.all}
             />
-            {SUBJECTS.map((s) => (
+            {SUBJECTS.filter((s) => (subjectCounts[s] ?? 0) > 0).map((s) => (
               <FilterPill
                 key={s}
                 active={filter === s}
                 onClick={() => setFilter(s)}
                 label={s.charAt(0).toUpperCase() + s.slice(1)}
                 count={subjectCounts[s] ?? 0}
-                disabled={(subjectCounts[s] ?? 0) === 0}
               />
             ))}
           </div>
