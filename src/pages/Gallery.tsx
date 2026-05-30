@@ -32,7 +32,7 @@ type ManifestEntry = {
 const assets = manifest as ManifestEntry[]
 
 // The subjects we always surface as filter pills (even when empty).
-const ALWAYS_ON_SUBJECTS = ['landscape', 'people', 'marketing', 'random', 'cinematic', 'music'] as const
+const ALWAYS_ON_SUBJECTS = ['landscape', 'people', 'marketing', 'random', 'cinematic', 'music', 'fashion', 'furniture'] as const
 
 const discoveredExtras = Array.from(
   new Set(
