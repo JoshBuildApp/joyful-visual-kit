@@ -31,20 +31,42 @@ type ManifestEntry = {
 
 const assets = manifest as ManifestEntry[]
 
-// The subjects we always surface as filter pills (even when empty).
-const ALWAYS_ON_SUBJECTS = ['landscape', 'people', 'marketing', 'random', 'cinematic', 'music', 'fashion', 'furniture'] as const
+// Projects, in display order. The gallery is organized as named bodies of
+// work — each `subject` slug in the manifest maps to one project here.
+// `label` is what shows on the filter pill.
+const PROJECTS: { slug: string; label: string }[] = [
+  { slug: 'circlo-pop-sport', label: 'Circlo — Pop Sport' },
+  { slug: 'nothing-to-lose', label: 'Nothing to Lose' },
+  { slug: 'coach-of-the-gods', label: 'Coach of the Gods' },
+  { slug: 'atelier', label: 'Atelier' },
+  { slug: 'still-life', label: 'Still Life' },
+  { slug: 'valdez-gallery', label: 'Valdez Gallery' },
+  { slug: 'tokyo', label: 'Tokyo' },
+  { slug: 'metropolis', label: 'Metropolis' },
+  { slug: 'pro-kit', label: 'Pro Kit' },
+  { slug: 'wild', label: 'Wild' },
+  { slug: 'delivered', label: 'Delivered' },
+]
 
+const PROJECT_LABELS: Record<string, string> = Object.fromEntries(
+  PROJECTS.map((p) => [p.slug, p.label]),
+)
+
+// Any subject slug present in the manifest but not in PROJECTS above still
+// gets a pill (slug shown as-is) so nothing silently disappears.
 const discoveredExtras = Array.from(
   new Set(
     assets
       .map((a) => a.subject)
-      .filter(
-        (s): s is string => s !== null && !ALWAYS_ON_SUBJECTS.includes(s as (typeof ALWAYS_ON_SUBJECTS)[number]),
-      ),
+      .filter((s): s is string => s !== null && !PROJECT_LABELS[s]),
   ),
 ).sort()
 
-const SUBJECTS: string[] = [...ALWAYS_ON_SUBJECTS, ...discoveredExtras]
+const SUBJECTS: string[] = [...PROJECTS.map((p) => p.slug), ...discoveredExtras]
+
+function labelFor(slug: string): string {
+  return PROJECT_LABELS[slug] ?? slug.charAt(0).toUpperCase() + slug.slice(1)
+}
 
 type Filter = 'all' | (typeof SUBJECTS)[number] | string
 
@@ -168,7 +190,7 @@ export default function Gallery() {
                 key={s}
                 active={filter === s}
                 onClick={() => setFilter(s)}
-                label={s.charAt(0).toUpperCase() + s.slice(1)}
+                label={labelFor(s)}
                 count={subjectCounts[s] ?? 0}
               />
             ))}
@@ -294,7 +316,7 @@ function GalleryCard({
         </span>
         {asset.subject && (
           <span className="glass-effect rounded-xl px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-md uppercase tracking-wider">
-            {asset.subject}
+            {labelFor(asset.subject)}
           </span>
         )}
       </div>
@@ -324,13 +346,13 @@ function EmptyState({ subject }: { subject?: string }) {
       </div>
       <h3 className="text-2xl font-bold text-foreground mb-3">
         {subject
-          ? `Nothing in ${subject.charAt(0).toUpperCase() + subject.slice(1)} yet`
+          ? `Nothing in ${labelFor(subject)} yet`
           : 'Nothing in the gallery yet'}
       </h3>
       <p className="text-muted-foreground leading-relaxed mb-4">
         Drop video or image files into{' '}
         <code className="bg-background px-2 py-1 rounded text-sm">
-          ~/Desktop/gallery/{subject ?? '{landscape,people,marketing,random,cinematic}'}/
+          ~/Desktop/gallery/{subject ?? '<project>'}/
         </code>{' '}
         and run{' '}
         <code className="bg-background px-2 py-1 rounded text-sm">
