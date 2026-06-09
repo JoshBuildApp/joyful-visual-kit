@@ -35,7 +35,16 @@ const assets = manifest as ManifestEntry[]
 // work — each `subject` slug in the manifest maps to one project here.
 // `label` is what shows on the filter pill.
 const PROJECTS: { slug: string; label: string }[] = [
-  { slug: 'concept-campaigns', label: 'Concept Campaigns' },
+  { slug: 'lunar', label: 'Lunar — Fintech' },
+  { slug: 'forgeline', label: 'Forgeline — Tools' },
+  { slug: 'talentbridge', label: 'TalentBridge — Hiring' },
+  { slug: 'volea', label: 'Volea — Padel' },
+  { slug: 'nordhavn', label: 'nordhavn — Furniture' },
+  { slug: 'solstice', label: 'Solstice — Festival' },
+  { slug: 'aura', label: 'Aura — Audio' },
+  { slug: 'ember-oak', label: 'Ember & Oak — Coffee' },
+  { slug: 'volt-runner', label: 'Volt//Runner — Sneakers' },
+  { slug: 'noir-vertige', label: 'Noir Vertige — Fragrance' },
   { slug: 'circlo-pop-sport', label: 'Circlo — Pop Sport' },
   { slug: 'nothing-to-lose', label: 'Nothing to Lose' },
   { slug: 'coach-of-the-gods', label: 'Coach of the Gods' },
