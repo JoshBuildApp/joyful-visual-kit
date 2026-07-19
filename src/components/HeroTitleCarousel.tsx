@@ -16,15 +16,15 @@ import { useEffect, useState } from 'react'
 type Phrase = string[]
 
 const phrases: Phrase[] = [
+  ['YOUR WORKFLOWS', 'OPTIMIZED', 'WITH AI'],
+  ['AUTONOMOUS', 'AI AGENTS', 'TAILORED TO YOU'],
   ['MUSIC, FILM, AI', 'PRODUCED', 'END TO END'],
   ['WEBSITES', 'BUILT END', 'TO END'],
   ['WORKFLOW', '& AUTOMATION', 'TEMPLATES'],
   ['PROMPT', 'ENGINEERING', 'AT SCALE'],
-  ['SOCIAL', 'MANAGED AS', 'A SYSTEM'],
-  ['AUTONOMOUS', 'AI AGENTS', 'TAILORED TO YOU'],
   ['CUSTOM', 'DASHBOARDS', 'FOR ANY BUSINESS'],
+  ['SOCIAL', 'MANAGED AS', 'A SYSTEM'],
   ['SEO', 'OPTIMISED', 'FOR GROWTH'],
-  ['PERFORMANCE', 'TUNED', 'FOR SPEED'],
   ['AND MUCH', 'MUCH', 'MORE'],
 ]
 

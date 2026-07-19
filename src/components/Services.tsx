@@ -12,21 +12,21 @@ type Capability = {
 
 const capabilities: Capability[] = [
   {
-    id: 'music',
+    id: 'ai-workflows',
     number: '01',
-    title: 'Music Production',
+    title: 'AI Workflow Optimization',
     description:
-      'Original soundtracks and composition at a professional level — written, produced, and arranged in-studio for releases and project scoring.',
-    tag: 'Composition · Arrangement',
-    accent: 'emerald',
+      'I map how a company actually works and rebuild it with AI — agents, automations, and approval loops that cut hours of manual ops. My day job at Agilina, and the product I’m building at Stable.',
+    tag: 'Map · Automate · Approve',
+    accent: 'purple',
   },
   {
-    id: 'mixing',
+    id: 'ai-agents',
     number: '02',
-    title: 'Mixing & Mastering',
+    title: 'AI Agents & Automation',
     description:
-      'Studio-grade mix and master. Every track delivered ready for streaming, release, or broadcast — balanced, loud, clean.',
-    tag: 'Mix · Master · Loudness',
+      'Autonomous agents wired to real tools and real data — sourcing, screening, follow-ups, reporting. Designed so a human approves every move, and the system never stalls.',
+    tag: 'Agents · Tools · Guardrails',
     accent: 'blue',
   },
   {
@@ -39,31 +39,31 @@ const capabilities: Capability[] = [
     accent: 'purple',
   },
   {
-    id: 'creative-direction',
-    number: '04',
-    title: 'Creative Direction',
-    description:
-      'Concept, treatment, casting, look-and-feel. The decisions that turn a vague idea into a coherent, on-brand release.',
-    tag: 'Concept · Treatment · Casting',
-    accent: 'emerald',
-  },
-  {
-    id: 'sound-design',
-    number: '05',
-    title: 'Sound Design',
-    description:
-      'Score, ambient, foley, and FX. The sonic layer that makes a film, ad, or product feel finished instead of assembled.',
-    tag: 'Score · Foley · Ambient',
-    accent: 'blue',
-  },
-  {
     id: 'ai-pipeline',
-    number: '06',
+    number: '04',
     title: 'AI Toolkit & Pipeline',
     description:
       'Multi-model prompt engineering and pipeline design. I treat Runway, Veo, Suno, ElevenLabs and Claude as a serious production team.',
     tag: 'Multi-model · Prompts · Pipelines',
-    accent: 'purple',
+    accent: 'emerald',
+  },
+  {
+    id: 'music',
+    number: '05',
+    title: 'Music Production',
+    description:
+      'Original soundtracks and composition at a professional level — written, produced, and arranged in-studio, then mixed and mastered ready for streaming, release, or broadcast.',
+    tag: 'Compose · Mix · Master',
+    accent: 'emerald',
+  },
+  {
+    id: 'creative-direction',
+    number: '06',
+    title: 'Creative Direction',
+    description:
+      'Concept, treatment, casting, look-and-feel — plus the sound design layer. The decisions that turn a vague idea into a coherent, on-brand release.',
+    tag: 'Concept · Treatment · Sound',
+    accent: 'blue',
   },
 ]
 
@@ -82,11 +82,11 @@ export function Services() {
           </div>
 
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-8">
-            <span className="block mb-2">What I produce</span>
+            <span className="block mb-2">What I build &amp; produce</span>
           </h2>
 
           <p className="text-2xl lg:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Six disciplines, one operator. Each shipped end-to-end.
+            From AI systems that run company workflows to studio-grade sound — six disciplines, one operator.
           </p>
         </div>
 

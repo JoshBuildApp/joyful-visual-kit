@@ -1,6 +1,7 @@
 'use client'
 
 import { ExternalLink } from 'lucide-react'
+import stablePreview from '@/assets/projects/stable.webp'
 import diraPreview from '@/assets/projects/dira.webp'
 import nightshiftPreview from '@/assets/projects/nightshift.webp'
 import coachOfTheGodsPreview from '@/assets/projects/coach-of-the-gods.webp'
@@ -26,6 +27,18 @@ type Project = {
 }
 
 const projects: Project[] = [
+  {
+    id: 'stable',
+    name: 'Stable',
+    tagline: 'AI agent crew that runs company workflows',
+    description:
+      'An AI operating system for HR where a crew of autonomous agents sources candidates, screens CVs, chases stalled processes, and carries day-to-day ops — every move proposed by an agent, approved by a human. Built on the workflows I optimize daily at Agilina.',
+    tag: 'AI · In development',
+    year: '2026',
+    status: 'In development',
+    accent: 'purple',
+    previewImage: stablePreview,
+  },
   {
     id: 'circlo',
     name: 'Circlo',
@@ -109,7 +122,7 @@ export function Portfolio() {
           </h2>
 
           <p className="text-2xl lg:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Products, platforms, and creative releases — designed end-to-end from one studio.
+            AI systems, products, and creative releases — designed end-to-end from one studio.
           </p>
         </div>
 

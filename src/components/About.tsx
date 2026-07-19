@@ -27,6 +27,18 @@ type ServiceProcess = {
  */
 const services: ServiceProcess[] = [
   {
+    id: 'ai-agent',
+    label: 'AI Agent',
+    subtitle: 'Map the workflow, architect the agent, ship it safely into production.',
+    steps: [
+      { number: '01', title: 'Map the Workflow', description: 'Current process, pain points, automation candidates. Find the moves only a human still has to make.', accent: 'purple' },
+      { number: '02', title: 'Architect the Agent', description: 'Tools, models, prompts, safety boundaries. Pick the multi-model stack that fits the task.', accent: 'emerald' },
+      { number: '03', title: 'Build & Wire', description: 'LLM chains, tool calls, error handling, retries. The infrastructure between idea and reliable behaviour.', accent: 'blue' },
+      { number: '04', title: 'Test on Real Data', description: 'Edge cases, hallucination guards, cost limits. Stress-tested on production-shaped inputs.', accent: 'purple' },
+      { number: '05', title: 'Deploy & Monitor', description: 'Production hand-off with observability, alerts, and a feedback loop for continuous improvement.', accent: 'emerald' },
+    ],
+  },
+  {
     id: 'ai-video',
     label: 'AI Video',
     subtitle: 'A five-step pipeline from script to master — repeatable, fast, end-to-end.',
@@ -36,18 +48,6 @@ const services: ServiceProcess[] = [
       { number: '03', title: 'AI Production', description: 'Multi-variant generation, motion tests, and the iteration loop that turns a treatment into footage.', accent: 'purple' },
       { number: '04', title: 'Post-production', description: 'Edit, color, sound design, and mix. The pass that makes generated material feel directed.', accent: 'blue' },
       { number: '05', title: 'Master & Deliver', description: 'Format export, captioning, and secure hand-off. Ready for release across every channel.', accent: 'purple' },
-    ],
-  },
-  {
-    id: 'music',
-    label: 'Music',
-    subtitle: 'From mood reference to mastered release — five stages, studio-grade output.',
-    steps: [
-      { number: '01', title: 'Brief & Reference', description: 'Mood, genre, tempo, references. Lock the destination before laying down a single note.', accent: 'emerald' },
-      { number: '02', title: 'Sketch & Compose', description: 'Chords, melody, structure. The core musical idea, drafted and refined until it works.', accent: 'blue' },
-      { number: '03', title: 'Production', description: 'Arrangement, instrument selection, performance, sound design — fully tracked.', accent: 'purple' },
-      { number: '04', title: 'Mix', description: 'EQ, compression, automation, depth. The pass that makes every element sit right.', accent: 'emerald' },
-      { number: '05', title: 'Master', description: 'Loudness, format export, broadcast-ready. Delivered tuned for streaming or scoring.', accent: 'blue' },
     ],
   },
   {
@@ -63,18 +63,6 @@ const services: ServiceProcess[] = [
     ],
   },
   {
-    id: 'ai-agent',
-    label: 'AI Agent',
-    subtitle: 'Map the workflow, architect the agent, ship it safely into production.',
-    steps: [
-      { number: '01', title: 'Map the Workflow', description: 'Current process, pain points, automation candidates. Find the moves only a human still has to make.', accent: 'purple' },
-      { number: '02', title: 'Architect the Agent', description: 'Tools, models, prompts, safety boundaries. Pick the multi-model stack that fits the task.', accent: 'emerald' },
-      { number: '03', title: 'Build & Wire', description: 'LLM chains, tool calls, error handling, retries. The infrastructure between idea and reliable behaviour.', accent: 'blue' },
-      { number: '04', title: 'Test on Real Data', description: 'Edge cases, hallucination guards, cost limits. Stress-tested on production-shaped inputs.', accent: 'purple' },
-      { number: '05', title: 'Deploy & Monitor', description: 'Production hand-off with observability, alerts, and a feedback loop for continuous improvement.', accent: 'emerald' },
-    ],
-  },
-  {
     id: 'dashboard',
     label: 'Custom Dashboard',
     subtitle: 'From the decisions you need to make to the dashboard that makes them obvious.',
@@ -84,6 +72,18 @@ const services: ServiceProcess[] = [
       { number: '03', title: 'Design the Surface', description: 'Charts, filters, drill-downs, hierarchy. A surface that a non-analyst can read in seconds.', accent: 'purple' },
       { number: '04', title: 'Build & Connect', description: 'Queries, API layer, real-time updates where they matter. Frontend tied to live data, not screenshots.', accent: 'emerald' },
       { number: '05', title: 'Train & Hand-off', description: 'Docs, training session, ongoing tweaks. The dashboard is only useful once the team trusts it.', accent: 'blue' },
+    ],
+  },
+  {
+    id: 'music',
+    label: 'Music',
+    subtitle: 'From mood reference to mastered release — five stages, studio-grade output.',
+    steps: [
+      { number: '01', title: 'Brief & Reference', description: 'Mood, genre, tempo, references. Lock the destination before laying down a single note.', accent: 'emerald' },
+      { number: '02', title: 'Sketch & Compose', description: 'Chords, melody, structure. The core musical idea, drafted and refined until it works.', accent: 'blue' },
+      { number: '03', title: 'Production', description: 'Arrangement, instrument selection, performance, sound design — fully tracked.', accent: 'purple' },
+      { number: '04', title: 'Mix', description: 'EQ, compression, automation, depth. The pass that makes every element sit right.', accent: 'emerald' },
+      { number: '05', title: 'Master', description: 'Loudness, format export, broadcast-ready. Delivered tuned for streaming or scoring.', accent: 'blue' },
     ],
   },
 ]
