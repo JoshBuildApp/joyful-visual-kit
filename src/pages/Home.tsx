@@ -49,9 +49,10 @@ export default function Home() {
 
         <div className="home-hero-bottom">
           <p className="home-lede">
-            Founder and multi-disciplinary <span className="home-em">producer</span> building
-            products, brands, and sound from a one-person studio. Strategy, design, code, and
-            creative direction across everything I make.
+            Founder building <span className="home-em">AI agents</span> that take real work off
+            companies&rsquo; plates — and the products, brands, and sound around them. Head of
+            Technology &amp; AI at Agilina. Strategy, design, code, and creative direction from a
+            one-person studio.
           </p>
           <div className="home-hero-side">
             <span className="home-availability">
@@ -88,15 +89,17 @@ export default function Home() {
               blank page to shipped, and run the business behind them.
             </p>
             <p>
-              Right now I&rsquo;m leading <em>Circlo</em>, a coaching platform; building{' '}
-              <em>Dira</em>, an app for managing real-estate holdings; running{' '}
-              <em>Automation Master</em>, a template library for operators; producing original
-              music; and managing a real padel facility on the side. Earlier, I contributed to
-              the website and online shop of a well-known sports brand.
+              Right now I run two things. <em>Stable</em> — my company building AI agents that
+              optimize how companies work: autonomous crews that source candidates, screen CVs,
+              chase stalled processes, and carry the operational load of hiring and managing
+              people, with a human approving every move. And <em>Agilina</em>, where I&rsquo;m
+              Head of Technology &amp; AI — leading the technology behind an Israeli recruitment
+              company: an AI career coach, a matching engine, and a two-sided hiring platform
+              that make recruiting faster, more precise, and more human.
             </p>
             <p>
-              The thread connecting all of it is that I treat AI tools as a serious team.
-              That&rsquo;s what lets one person ship at the scale of a small studio.
+              The thread connecting all of it is that I treat AI as a serious team. That belief
+              became the product — now I build those teams for other companies.
             </p>
           </div>
         </div>
@@ -115,6 +118,24 @@ export default function Home() {
         <ul className="home-index" role="list">
           <IndexRow
             n="01"
+            name={<>Stable</>}
+            italic
+            role="AI agents for company work — an HR OS run by an autonomous crew"
+            year="2026 — Building"
+            live
+          />
+          <IndexRow
+            n="02"
+            name={<>Agilina</>}
+            italic
+            role="Head of Technology & AI — coach, matching engine, hiring platform"
+            year="2026 — Live"
+            live
+            href="https://agilina.co"
+            external
+          />
+          <IndexRow
+            n="03"
             name={<>Circlo</>}
             italic
             role="Coaching platform — product, design, code, brand"
@@ -124,26 +145,20 @@ export default function Home() {
             external
           />
           <IndexRow
-            n="02"
-            name="Circlo Control"
-            role="Analytics and manager tools for Circlo coaches"
-            year="2026 — In development"
-          />
-          <IndexRow
-            n="03"
+            n="04"
             name={<>Dira</>}
             italic
             role="Real-estate holdings & portfolio app"
             year="2026 — Shipping"
           />
           <IndexRow
-            n="04"
+            n="05"
             name="Automation Master"
             role="Automation templates for operators & founders"
             year="2024 — Running"
           />
           <IndexRow
-            n="05"
+            n="06"
             name={
               <>
                 Coach of the <span className="home-em">Gods</span>
@@ -154,13 +169,13 @@ export default function Home() {
             href="/production"
           />
           <IndexRow
-            n="06"
+            n="07"
             name="Sports Brand — Web & Shop"
             role="Contributor — frontend & e-commerce build"
             year="2023"
           />
           <IndexRow
-            n="07"
+            n="08"
             name="Padel Facility"
             role="Day-to-day operations — bookings, members, events"
             year="2024 — Running"
@@ -193,6 +208,20 @@ export default function Home() {
         </div>
 
         <ul className="home-experience" role="list">
+          <ExpRow
+            date="2026 — NOW"
+            role="Founder"
+            place="Stable"
+            desc="Building an AI HR OS where an autonomous agent crew sources, screens, follows up, and manages — proposing every action and executing on human approval."
+            tag="Founder"
+          />
+          <ExpRow
+            date="2026 — NOW"
+            role="Head of Technology & AI"
+            place="Agilina"
+            desc="Leading technology and AI for the Israeli recruitment company — an AI career coach, a job-match engine, and a two-sided process tracker used by seekers and companies."
+            tag="AI & Tech"
+          />
           <ExpRow
             date="2025 — NOW"
             role="Founder & CEO"
@@ -283,9 +312,9 @@ export default function Home() {
             stack="Composition · Arrangement / Mixing · Mastering / Sound design · Score"
           />
           <CapBlock
-            title={<>AI &amp; <span className="home-em">Automation</span></>}
-            body="I architect prompts, chain models, and design serious workflows around AI. Templates and pipelines that compress manual ops into background processes."
-            stack="Claude · GPT · Multi-model / Prompt engineering · AI agents / Workflow design · Templates"
+            title={<>AI <span className="home-em">Agents</span> &amp; Automation</>}
+            body="I design and ship agent systems for real operations — tool-wired LLMs, approval loops, scheduled crews. Pipelines that compress manual work into background processes a human signs off on."
+            stack="Claude · GPT · Multi-model / Agent architecture · Tool design / Approval workflows · Automation"
           />
         </div>
       </section>
