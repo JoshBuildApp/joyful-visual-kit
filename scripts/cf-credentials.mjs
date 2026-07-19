@@ -36,16 +36,26 @@ function readDotEnv() {
   return out
 }
 
-export function getCredentials() {
+/** Like getCredentials, but returns nulls instead of exiting — for use
+ *  inside long-lived processes (the Vite dev server) where process.exit
+ *  would kill the whole server. */
+export function findCredentials() {
   const fromEnv = readDotEnv()
   const token =
     readKeychain(KEYCHAIN_TOKEN_SERVICE) ||
     process.env.CF_API_TOKEN ||
-    fromEnv.CF_API_TOKEN
+    fromEnv.CF_API_TOKEN ||
+    null
   const accountId =
     readKeychain(KEYCHAIN_ACCOUNT_SERVICE) ||
     process.env.CF_ACCOUNT_ID ||
-    fromEnv.CF_ACCOUNT_ID
+    fromEnv.CF_ACCOUNT_ID ||
+    null
+  return { token, accountId }
+}
+
+export function getCredentials() {
+  const { token, accountId } = findCredentials()
 
   if (!token || !accountId) {
     console.error(

@@ -6,6 +6,10 @@
  *
  * Run with: npm run sync-cloudflare
  *
+ * (You can also upload straight from the browser now — run `npm run dev`,
+ * open /gallery?curate and use “Add media”. Same Cloudflare account, same
+ * manifest.)
+ *
  * Credentials come from macOS Keychain (or env / .env as fallback) — see
  * scripts/cf-credentials.mjs for the exact lookup order. The token needs
  * Stream:Edit + Cloudflare Images:Edit scopes on your account.
@@ -13,30 +17,27 @@
  * Notes:
  *   - Stream basic upload caps at ~200 MiB. Larger files fail with a clear
  *     message; upload via dashboard or extend this script to use TUS.
- *   - We never delete from Cloudflare. Pruning is manual via dashboard so
- *     a typo here can't nuke uploaded media.
+ *   - This script never deletes from Cloudflare. Remote deletion only
+ *     happens through the curate UI, where it's explicit and opt-in.
+ *   - Existing manifest order is preserved (it may be hand-curated via the
+ *     UI); new entries slot in after the last item of the same subject.
  */
 import { readFile, writeFile, readdir, stat } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { homedir } from 'node:os'
-import { join, extname } from 'node:path'
+import { join } from 'node:path'
 import { getCredentials } from './cf-credentials.mjs'
-
-const VIDEO_EXTS = new Set(['.mp4', '.webm', '.mov'])
-const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'])
-const AUDIO_EXTS = new Set(['.mp3', '.wav', '.m4a', '.aac', '.ogg', '.flac'])
-const STREAM_MAX_BYTES = 200 * 1024 * 1024
+import {
+  classify,
+  STREAM_MAX_BYTES,
+  uploadBufferToStream,
+  uploadBufferToImages,
+  buildStreamEntry,
+  buildImageEntry,
+} from './cf-lib.mjs'
 
 const SRC = process.env.GALLERY_SRC || join(homedir(), 'Desktop', 'gallery')
 const MANIFEST_PATH = new URL('../src/data/gallery.json', import.meta.url).pathname
-
-function classify(filename) {
-  const ext = extname(filename).toLowerCase()
-  if (VIDEO_EXTS.has(ext)) return 'video'
-  if (IMAGE_EXTS.has(ext)) return 'image'
-  if (AUDIO_EXTS.has(ext)) return 'audio'
-  return null
-}
 
 async function listMedia(dir) {
   const entries = await readdir(dir, { withFileTypes: true })
@@ -68,96 +69,22 @@ async function listMedia(dir) {
   return results
 }
 
-function prettyName(filename) {
-  return filename
-    .replace(/\.[^.]+$/, '')
-    .replace(/^\d+[_-]+/, '')
-    .replace(/[-_]+/g, ' ')
-    .trim()
-}
-
-async function uploadToStream({ accountId, token, file, filename }) {
-  const buf = await readFile(file)
-  const form = new FormData()
-  form.append('file', new Blob([buf]), filename)
-  const res = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${accountId}/stream`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: form,
-    },
-  )
-  const json = await res.json()
-  if (!res.ok || !json.success) {
-    throw new Error(`Stream upload failed: ${JSON.stringify(json.errors || json)}`)
-  }
-  return json.result
-}
-
-async function uploadToImages({ accountId, token, file, filename }) {
-  const buf = await readFile(file)
-  const form = new FormData()
-  form.append('file', new Blob([buf]), filename)
-  const res = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${accountId}/images/v1`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: form,
-    },
-  )
-  const json = await res.json()
-  if (!res.ok || !json.success) {
-    throw new Error(`Images upload failed: ${JSON.stringify(json.errors || json)}`)
-  }
-  return json.result
-}
-
-function buildStreamEntry(item, cfResult, kind) {
-  // Stream's response gives us a customer-coded host like
-  //   customer-{code}.cloudflarestream.com — use it for iframe + thumbnails
-  //   so we don't depend on a separate account-hash env var.
-  const hls = cfResult.playback?.hls || ''
-  const hostMatch = hls.match(/https:\/\/([^/]+)/)
-  const host = hostMatch ? hostMatch[1] : 'videodelivery.net'
-  const uid = cfResult.uid
-  const base = {
-    sourceKey: item.sourceKey,
-    kind,
-    subject: item.subject,
-    name: prettyName(item.filename),
-    cfId: uid,
-    displayUrl: `https://${host}/${uid}/iframe`,
-  }
-  if (kind === 'video') {
-    base.previewUrl = `https://${host}/${uid}/thumbnails/thumbnail.gif?time=0s&duration=4s`
-    base.posterUrl = `https://${host}/${uid}/thumbnails/thumbnail.jpg`
-  }
-  // Audio: no previewUrl/posterUrl — the gallery card renders a music-icon
-  // placeholder instead of a thumbnail.
-  return base
-}
-
-function buildImageEntry(item, cfResult) {
-  const variants = cfResult.variants || []
-  const url = variants[0]
-  if (!url) throw new Error(`No variant URL returned for ${item.sourceKey}`)
-  return {
-    sourceKey: item.sourceKey,
-    kind: 'image',
-    subject: item.subject,
-    name: prettyName(item.filename),
-    cfId: cfResult.id,
-    displayUrl: url,
-    previewUrl: url,
-  }
-}
-
 function formatBytes(n) {
   if (n < 1024) return `${n} B`
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`
   return `${(n / 1024 / 1024).toFixed(1)} MB`
+}
+
+// Insert after the last manifest entry with the same subject, so groups stay
+// together without re-sorting (and destroying) the curated order.
+function insertEntry(manifest, entry) {
+  let at = -1
+  const subj = (entry.subject || '').toLowerCase()
+  for (let i = 0; i < manifest.length; i++) {
+    if ((manifest[i].subject || '').toLowerCase() === subj) at = i
+  }
+  if (at === -1) manifest.push(entry)
+  else manifest.splice(at + 1, 0, entry)
 }
 
 async function main() {
@@ -197,15 +124,16 @@ async function main() {
 
     process.stdout.write(`  → ${item.sourceKey} (${kind}, ${formatBytes(size)})... `)
     try {
+      const buf = await readFile(item.absPath)
       let entry
       if (kind === 'video' || kind === 'audio') {
-        const r = await uploadToStream({ accountId, token, file: item.absPath, filename: item.filename })
+        const r = await uploadBufferToStream({ accountId, token, buf, filename: item.filename })
         entry = buildStreamEntry(item, r, kind)
       } else {
-        const r = await uploadToImages({ accountId, token, file: item.absPath, filename: item.filename })
+        const r = await uploadBufferToImages({ accountId, token, buf, filename: item.filename })
         entry = buildImageEntry(item, r)
       }
-      manifest.push(entry)
+      insertEntry(manifest, entry)
       haveKeys.add(entry.sourceKey)
       uploaded++
       process.stdout.write(`OK (${entry.cfId})\n`)
@@ -215,12 +143,6 @@ async function main() {
     }
   }
 
-  manifest.sort((a, b) => {
-    const sa = a.subject || ''
-    const sb = b.subject || ''
-    if (sa !== sb) return sa.localeCompare(sb)
-    return a.name.localeCompare(b.name)
-  })
   await writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n', 'utf8')
 
   console.log(`\nDone. Uploaded ${uploaded}, skipped ${skipped} (already in manifest).`)
