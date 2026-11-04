@@ -10,4 +10,6 @@ Guy Avnaim's portfolio. TanStack Start on Cloudflare Workers, with bun.
 PATH=/usr/local/bin:$PATH bun run dev
 ```
 
+Deploy with `bun run deploy`. It uses a separate Cloudflare login for your personal account, because the default login on this machine is Agilina's and the repo's `.env` token only covers gallery uploads. If it says you are not logged in, run the login line at the top of `scripts/deploy.sh`.
+
 `prototypes/one-line/` is the throwaway prototype behind the design. Do not build on it.

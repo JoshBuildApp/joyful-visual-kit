@@ -1,8 +1,14 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "guyavnaim",
+  // Your personal account, not the Agilina one this machine is logged in to by default.
+  "account_id": "2d543028a918ac943bc62e48347d4bff",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
-  // No routes yet: guyavnaim.com still points at Lovable until you approve the move.
+  "main": "@tanstack/react-start/server-entry",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "guyavnaim.com", "custom_domain": true },
+    { "pattern": "www.guyavnaim.com", "custom_domain": true }
+  ]
 }

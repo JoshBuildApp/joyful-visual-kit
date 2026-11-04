@@ -6,6 +6,7 @@
     "dev": "vite dev --port 5320",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "bash scripts/deploy.sh",
     "sync-gallery": "node scripts/sync-gallery.mjs",
     "sync-cloudflare": "node scripts/sync-cloudflare.mjs",
     "verify-cloudflare": "node scripts/verify-cloudflare.mjs",
