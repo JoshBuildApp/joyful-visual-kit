@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "one-line", "runtimeExecutable": "/Users/guyavnaim/.bun/bin/bun", "runtimeArgs": ["run", "prototypes/one-line/serve.ts"], "port": 5321 },
+    { "name": "portfolio", "runtimeExecutable": "/usr/local/bin/node", "runtimeArgs": ["node_modules/vite/bin/vite.js", "dev", "--port", "5320"], "port": 5320 }
+  ]
+}

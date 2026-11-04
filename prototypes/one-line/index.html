@@ -1,0 +1,328 @@
+<title>One Line Prototype</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a sky hero (from FIND) where your background videos rise out of a gradient matched to each clip,
+   then a stack of full-colour rounded sections (from Plazas), one bold colour per project, joined by one line of numbered dots. */
+@property --t{syntax:'<color>';inherits:true;initial-value:#9FC4E8}
+@property --b{syntax:'<color>';inherits:true;initial-value:#F2CDB2}
+@property --hfg{syntax:'<color>';inherits:true;initial-value:#101223}
+:root{
+  --paper:#FFFBF3; --ink:#101223; --soft:#5B5E73; --coral:#FF5A3C; --blue:#2F5BFF; --white:#FFFFFF;
+  --display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+  --text:"Instrument Sans",system-ui,-apple-system,sans-serif;
+  --pad:clamp(16px,3vw,44px);
+  --gl:max(var(--pad),env(safe-area-inset-left,0px));
+  --gr:max(var(--pad),env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--ink);font:400 17px/1.45 var(--text);overflow-x:clip;-webkit-text-size-adjust:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+h1,h2,h3,p{margin:0}
+.pill{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:99px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;transition:transform .12s ease-out}
+.pill:active{transform:scale(.97)}
+.pill svg{width:16px;height:16px;flex:none}
+
+/* floating nav */
+nav{position:fixed;z-index:30;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:99px;padding:7px 8px 7px 18px;box-shadow:0 10px 30px rgba(16,18,35,.14),0 0 0 1px rgba(16,18,35,.05)}
+.brand{display:flex;align-items:center;gap:9px;font:800 16px/1 var(--display);letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
+.brand i{width:20px;height:20px;border-radius:6px;background:var(--coral);position:relative;flex:none}
+.brand i::after{content:"";position:absolute;right:4px;bottom:4px;width:8px;height:8px;border-radius:3px;background:#FFC93C}
+.links{display:flex;gap:22px;font-weight:500;font-size:14px}
+.links a{text-decoration:none}
+.links a:hover{text-decoration:underline;text-underline-offset:3px}
+nav .pill{min-height:38px;padding:0 16px;font-size:14px;background:var(--blue);color:var(--white)}
+
+/* hero */
+#heroWrap{height:200svh;position:relative}
+#hero{position:sticky;top:0;height:100svh;overflow:hidden;background:linear-gradient(180deg,var(--t) 0%,var(--b) 72%);transition:--t 1s linear,--b 1s linear,--hfg .6s linear;isolation:isolate}
+.cloud{position:absolute;left:0;width:200%;height:46%;background:url(media/clouds.png) repeat-x 0 0/50% 100%;z-index:0;opacity:var(--co,.95);transition:opacity 1s linear;will-change:transform;pointer-events:none}
+#c1{top:5%;animation:drift 90s linear infinite}
+#c2{top:26%;height:32%;opacity:calc(var(--co,.95)*.7);animation:drift 150s linear infinite reverse}
+@keyframes drift{to{transform:translateX(-50%)}}
+#plate{position:absolute;left:0;right:0;bottom:0;height:calc(var(--ph,.62)*100%);z-index:1;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 calc(var(--pm,.34)*100%));mask-image:linear-gradient(to bottom,transparent 0,#000 calc(var(--pm,.34)*100%))}
+#plate video,#plate img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%;transition:opacity 1s linear;opacity:0}
+#plate img{opacity:1}
+#htext{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:calc(env(safe-area-inset-top,0px) + 92px) var(--gr) 0 var(--gl);color:var(--hfg);transition:color .6s linear;will-change:transform,opacity}
+h1{font:800 clamp(66px,14vw,226px)/.92 var(--display);letter-spacing:-.035em}
+#tag{margin-top:clamp(12px,2vh,22px);font-size:clamp(17px,1.7vw,24px);font-weight:600;letter-spacing:-.015em;line-height:1.3;max-width:38rem}
+#tag span{opacity:.55}
+#hcta{margin-top:clamp(14px,2.2vh,24px);background:var(--ink);color:var(--white)}
+#clip{position:absolute;z-index:3;right:var(--gr);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);color:#fff;font-size:12px;font-weight:500;letter-spacing:.02em;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+
+/* stack */
+#work{position:relative;margin-top:-40px}
+.card{position:sticky;top:0;height:100svh;border-radius:40px 40px 0 0;overflow:hidden;background:var(--bg);color:var(--fg);margin-bottom:45svh;box-shadow:0 -24px 60px rgba(16,18,35,.18)}
+.card:last-child{margin-bottom:0}
+.rail{position:absolute;top:0;bottom:0;left:calc(var(--gl) + 15px);width:2px;background:var(--ac);opacity:.55}
+.inner{position:relative;height:100%;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,3.5vw,56px);padding:calc(env(safe-area-inset-top,0px) + 84px) var(--gr) calc(env(safe-area-inset-bottom,0px) + 32px) calc(var(--gl) + 54px)}
+.copy{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2vh,20px);position:relative}
+.dot{position:absolute;left:-54px;top:50%;width:32px;height:32px;border-radius:50%;background:var(--ac);color:var(--dotfg,#fff);display:grid;place-items:center;font:800 14px/1 var(--display);transform:translateY(-50%);box-shadow:0 0 0 6px var(--bg)}
+.card h3{font:800 clamp(60px,10.2vw,168px)/.92 var(--display);letter-spacing:-.035em}
+.lead{font-size:clamp(19px,2vw,30px);line-height:1.2;font-weight:600;letter-spacing:-.02em;max-width:33rem}
+.lead span{opacity:.6}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{padding:6px 13px;border-radius:99px;background:var(--chip);font-size:13px;font-weight:500}
+.card .pill{align-self:flex-start;background:var(--fg);color:var(--bg)}
+.media{position:relative;min-width:0;min-height:0;border-radius:28px;overflow:hidden;background:var(--mbg,rgba(0,0,0,.08));box-shadow:0 24px 60px rgba(16,18,35,.22)}
+.media video,.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:var(--fit,cover);display:block}
+.media.tall{aspect-ratio:9/16;height:100%;max-width:100%;justify-self:center}
+.media.wide{aspect-ratio:16/9;align-self:center;width:100%}
+.inner.w{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)}
+.media.wide video{object-fit:cover}
+
+/* overview */
+#over{--bg:var(--ink);--fg:var(--white);--ac:var(--coral);height:auto;min-height:100svh}
+#over .wrap{max-width:1000px;margin-inline:auto;padding:calc(env(safe-area-inset-top,0px) + 96px) var(--gr) 56px var(--gl);display:grid;gap:clamp(22px,4vh,44px)}
+#over h2{font:800 clamp(46px,8.4vw,128px)/.96 var(--display);letter-spacing:-.03em}
+#over h2 em{font-style:normal;color:var(--coral)}
+#line{list-style:none;margin:0;padding:0;position:relative}
+#line::before{content:"";position:absolute;top:18px;bottom:18px;left:15px;width:2px;background:var(--coral)}
+#line li{position:relative}
+#line button{width:100%;display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:18px;align-items:center;padding:clamp(8px,1.5vh,14px) 0;text-align:left;min-height:48px}
+#line i{width:32px;height:32px;border-radius:50%;background:var(--coral);color:#fff;display:grid;place-items:center;font:800 14px/1 var(--display);font-style:normal;position:relative}
+#line b{font:800 clamp(25px,3.8vw,48px)/1 var(--display);letter-spacing:-.03em;transition:color .12s}
+#line button:hover b{color:var(--coral)}
+#line small{font-size:13px;color:rgba(255,255,255,.62);text-align:right}
+
+/* end */
+#end{position:relative;z-index:5;min-height:100svh;border-radius:40px 40px 0 0;margin-top:-40px;overflow:hidden;background:linear-gradient(180deg,#F9B48C 0%,#E97F7A 46%,#4B3C8F 100%);color:var(--white);display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,3vh,28px);padding:96px var(--gr) calc(env(safe-area-inset-bottom,0px) + 28px) var(--gl);isolation:isolate}
+#end .cloud{top:4%;opacity:.5;z-index:-1}
+#end h2{font:800 clamp(60px,13vw,210px)/.92 var(--display);letter-spacing:-.035em;color:var(--ink)}
+#end h2 em{font-style:normal;color:var(--white)}
+#mail{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:center;font:700 clamp(21px,3vw,40px)/1.1 var(--display);letter-spacing:-.02em;overflow-wrap:anywhere}
+#mail span{-webkit-user-select:all;user-select:all}
+#copy{background:var(--ink);color:var(--white)}
+#foot{display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between;font-size:13px;font-weight:500;margin-top:clamp(10px,4vh,40px)}
+
+@media (max-aspect-ratio:9/10){
+  .links{display:none}
+  h1{font-size:clamp(70px,23vw,180px)}
+  #heroWrap{height:180svh}
+  .inner{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:16px;padding:calc(env(safe-area-inset-top,0px) + 86px) var(--gr) calc(env(safe-area-inset-bottom,0px) + 18px) var(--gl)}
+  .rail,.dot{display:none}
+  .inner.w{grid-template-columns:minmax(0,1fr)}
+  .media.wide{align-self:start}
+  .card h3{font-size:clamp(58px,19vw,120px)}
+  .lead{font-size:18px}
+  .chips span{font-size:12px;padding:5px 11px}
+  .card .pill{min-height:44px}
+  .copy{justify-content:flex-start;gap:10px}
+  .media.tall{height:100%;aspect-ratio:9/16;justify-self:center}
+  .card{border-radius:30px 30px 0 0;margin-bottom:30svh}
+  #line small{display:none}
+  #line button{grid-template-columns:32px minmax(0,1fr)}
+  #end{border-radius:30px 30px 0 0}
+}
+@media (prefers-reduced-motion:reduce){.cloud{animation:none}html{scroll-behavior:auto}#hero{transition:none}}
+</style>
+
+<nav aria-label="Main">
+  <a class="brand" href="#top"><i aria-hidden="true"></i>Guy Avnaim</a>
+  <div class="links"><a href="#over" data-go="over">Work</a><a href="#end" data-go="end">Contact</a></div>
+  <a class="pill" href="#end" data-go="end">Let’s talk</a>
+</nav>
+
+<div id="heroWrap">
+  <section id="hero" aria-label="Introduction">
+    <div class="cloud" id="c1" aria-hidden="true"></div>
+    <div class="cloud" id="c2" aria-hidden="true"></div>
+    <div id="plate" aria-hidden="true">
+      <img src="media/hero-poster.jpg" alt="" id="poster">
+      <video id="vA" muted playsinline preload="auto" tabindex="-1"></video>
+      <video id="vB" muted playsinline preload="auto" tabindex="-1"></video>
+    </div>
+    <div id="htext">
+      <h1 id="top">Guy Avnaim</h1>
+      <p id="tag">Founder. I design and build products. <span>With AI as my crew.</span></p>
+      <a class="pill" id="hcta" href="#over" data-go="over">See the work <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg></a>
+    </div>
+    <div id="clip" aria-hidden="true"></div>
+  </section>
+</div>
+
+<div id="work">
+  <section class="card" id="over" aria-label="Overview">
+    <div class="wrap">
+      <h2>Six projects. <em>One</em> line.</h2>
+      <ol id="line"></ol>
+    </div>
+  </section>
+
+  <section class="card" id="p0" style="--bg:#FF5A1F;--fg:#FFFFFF;--ac:#0B1020;--chip:rgba(255,255,255,.22);--mbg:#FF5A1F">
+    <div class="rail"></div>
+    <div class="inner">
+      <div class="copy"><span class="dot">1</span>
+        <h3>Circlo</h3>
+        <p class="lead">Find your circle. <span>A Hebrew-first sports app and coach marketplace.</span></p>
+        <div class="chips"><span>Live on iOS and Android</span><span>Mar 2026 to now</span><span>3,798 commits</span></div>
+        <a class="pill" href="https://circlo.co.il" target="_blank" rel="noopener">Open Circlo <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+      </div>
+      <div class="media tall"><video data-src="media/circlo-film.mp4" poster="media/circlo-film.jpg" muted loop playsinline preload="none" aria-label="Circlo launch film"></video></div>
+    </div>
+  </section>
+
+  <section class="card" id="p1" style="--bg:#FFFBF3;--fg:#101223;--ac:#FF5A3C;--chip:rgba(16,18,35,.07);--mbg:#FFFBF3">
+    <div class="rail"></div>
+    <div class="inner w">
+      <div class="copy"><span class="dot">2</span>
+        <h3>Plazas</h3>
+        <p class="lead">Build your workplace. <span style="color:#FF5A3C;opacity:1">Hire AI employees.</span></p>
+        <div class="chips"><span>Live, working prototype</span><span>Oct 2026 to now</span><span>517 commits</span></div>
+        <a class="pill" href="https://plazas.ai" target="_blank" rel="noopener">Open Plazas <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+      </div>
+      <div class="media wide"><video data-src="media/plazas-film.mp4" poster="media/plazas-film.jpg" muted loop playsinline preload="none" aria-label="Plazas film"></video></div>
+    </div>
+  </section>
+
+  <section class="card" id="p2" style="--bg:#FFC93C;--fg:#101223;--ac:#F0812F;--chip:rgba(16,18,35,.1)">
+    <div class="rail"></div>
+    <div class="inner">
+      <div class="copy"><span class="dot">3</span>
+        <h3>Dogo</h3>
+        <p class="lead">Your dog’s home, for the whole family. <span>Health log, walk schedule, live walks.</span></p>
+        <div class="chips"><span>In active build</span><span>Sep 2026 to now</span><span>61 commits</span></div>
+      </div>
+      <div class="media"><img src="media/dogo.jpg" alt="Dogo sign-in screen with its dog mascot on an orange sunburst" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="card" id="p3" style="--bg:#0E4A3A;--fg:#F7F2E6;--ac:#E8C98A;--dotfg:#0E4A3A;--chip:rgba(247,242,230,.14)">
+    <div class="rail"></div>
+    <div class="inner">
+      <div class="copy"><span class="dot">4</span>
+        <h3>Samuels</h3>
+        <p class="lead">Jewelry, made with my father. <span>Shooting days, team and social presence.</span></p>
+        <div class="chips"><span>Jewelry brand</span><span>Since 2024</span></div>
+        <a class="pill" href="https://instagram.com/samuels_jewelry_" target="_blank" rel="noopener">Open Instagram <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+      </div>
+      <div class="media"><img src="media/samuels.jpg" alt="A pearl necklace in natural light" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="card" id="p4" style="--bg:#CFE3BE;--fg:#16261B;--ac:#B4533A;--chip:rgba(22,38,27,.1);--mbg:#FBF6EC;--fit:contain">
+    <div class="rail"></div>
+    <div class="inner">
+      <div class="copy"><span class="dot">5</span>
+        <h3>Dira</h3>
+        <p class="lead">Rent, without the spreadsheet. <span>Apartments, who has paid, reports.</span></p>
+        <div class="chips"><span>Prototype</span><span>Apr 2026</span><span>14 commits</span></div>
+      </div>
+      <div class="media"><img src="media/dira.jpg" alt="Dira's home screen in Hebrew, with rent summary cards" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="card" id="p5" style="--bg:#3A30F2;--fg:#FFFFFF;--ac:#FFDE0A;--dotfg:#101223;--chip:rgba(255,255,255,.18)">
+    <div class="rail"></div>
+    <div class="inner">
+      <div class="copy"><span class="dot">6</span>
+        <h3 style="color:#FFDE0A">Lantern</h3>
+        <p class="lead">Surveys people actually finish. <span>A conversation with an AI avatar, by voice or live video.</span></p>
+        <div class="chips"><span>Live demo</span><span>Aug 2026 to now</span><span>73 commits</span></div>
+        <a class="pill" href="https://meetlantern.pages.dev" target="_blank" rel="noopener">Open Lantern <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+      </div>
+      <div class="media"><video data-src="media/lantern-film.mp4" poster="media/lantern-film.jpg" muted loop playsinline preload="none" aria-label="Lantern's AI interviewer speaking"></video></div>
+    </div>
+  </section>
+</div>
+
+<section id="end" aria-label="Contact">
+  <div class="cloud" aria-hidden="true"></div>
+  <h2>Let’s build <em>something.</em></h2>
+  <div id="mail"><span>guyavnaim5@gmail.com</span><button type="button" class="pill" id="copy">Copy</button></div>
+  <div id="foot"><span>Guy Avnaim, Tel Aviv</span><a href="https://instagram.com/guy.avnaim" target="_blank" rel="noopener">Instagram</a></div>
+</section>
+
+<script>
+(function(){
+'use strict';
+var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var $=function(i){return document.getElementById(i)};
+function clamp(v,a,b){return v<a?a:v>b?b:v}
+function ss(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t)}
+
+// each background video brings its own sky, and light or dark text to suit it
+var CLIPS=[
+ {f:'03_tel_aviv_dawn',t:'#9FC4E8',b:'#F2CDB2',fg:'#101223',co:.95,n:'Tel Aviv, dawn'},
+ {f:'05_villa',t:'#8FA8CC',b:'#E3BCA8',fg:'#101223',co:.85,n:'Villa'},
+ {f:'04_aerial_forest',t:'#BFD6DE',b:'#DDE0D2',fg:'#101223',co:.9,n:'Forest'},
+ {f:'06_stone_arches',t:'#26100B',b:'#A5541A',fg:'#FFF4E6',co:.08,n:'Stone arches'},
+ {f:'07_leaf_and_drop',t:'#9DB88C',b:'#55663F',fg:'#101223',co:.3,n:'Leaf and drop'},
+ {f:'08_space',t:'#060A1C',b:'#1C2F55',fg:'#FFFFFF',co:0,n:'Orbit'},
+ {f:'02_studio_at_rest',t:'#E8D2AE',b:'#B99B78',fg:'#101223',co:.55,n:'Studio'},
+ {f:'01_ink_on_paper',t:'#EFE7D6',b:'#D9CFBC',fg:'#101223',co:.6,n:'Ink on paper'}
+];
+var hero=$('hero'),vA=$('vA'),vB=$('vB'),poster=$('poster'),ci=0,swapping=false,heroOn=true;
+function src(i){return 'media/'+CLIPS[i%CLIPS.length].f+'.mp4'}
+function look(c){hero.style.setProperty('--t',c.t);hero.style.setProperty('--b',c.b);hero.style.setProperty('--hfg',c.fg);hero.style.setProperty('--co',c.co);$('clip').textContent=c.n}
+function nextClip(){
+  if(swapping||RM)return;swapping=true;
+  ci=(ci+1)%CLIPS.length;
+  var inc=vB,old=vA;
+  try{inc.currentTime=0}catch(_){}
+  var p=inc.play();if(p&&p.catch)p.catch(function(){});
+  inc.style.opacity=1;old.style.opacity=0;look(CLIPS[ci]);
+  vA=inc;vB=old;
+  setTimeout(function(){old.pause();old.src=src(ci+1);old.load();swapping=false},1050);
+}
+[vA,vB].forEach(function(v){
+  v.addEventListener('timeupdate',function(){if(v===vA&&v.duration&&v.duration-v.currentTime<1.1)nextClip()});
+  v.addEventListener('error',function(){if(v===vA)nextClip()});
+});
+look(CLIPS[0]);
+if(!RM){
+  vA.src=src(0);vB.src=src(1);
+  vA.addEventListener('playing',function once(){vA.style.opacity=1;poster.style.opacity=0;vA.removeEventListener('playing',once)});
+  var p0=vA.play();if(p0&&p0.catch)p0.catch(function(){});
+}
+
+// on scroll the footage rises and fills the screen, as the building does in FIND
+var text=$('htext'),plate=$('plate'),wrap=$('heroWrap'),c1=$('c1'),ticking=false;
+function onScroll(){
+  ticking=false;
+  var h=wrap.offsetHeight-hero.offsetHeight,p=clamp(scrollY/(h||1),0,1);
+  plate.style.setProperty('--ph',.62+.38*ss(0,.8,p));
+  plate.style.setProperty('--pm',.34*(1-ss(.1,.8,p)));
+  text.style.opacity=1-ss(.05,.5,p);
+  text.style.transform=RM?'':'translateY('+(-p*24)+'vh)';
+  text.style.pointerEvents=p>.4?'none':'';
+  var on=scrollY<wrap.offsetHeight+40;
+  if(on!==heroOn&&!RM){heroOn=on;if(on){var q=vA.play();if(q&&q.catch)q.catch(function(){})}else{vA.pause();vB.pause()}}
+}
+addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+addEventListener('resize',onScroll);onScroll();
+
+// jump links: sticky sections need their resting position worked out
+var work=$('work'),cards=[].slice.call(document.querySelectorAll('.card'));
+function restY(el){
+  if(el.id==='end')return document.documentElement.scrollHeight;
+  var y=wrap.offsetTop+wrap.offsetHeight-40,i=cards.indexOf(el);
+  for(var k=0;k<i;k++){y+=cards[k].offsetHeight+parseFloat(getComputedStyle(cards[k]).marginBottom)}
+  return y;
+}
+function go(id){var el=$(id);scrollTo({top:restY(el),behavior:RM?'auto':'smooth'})}
+document.querySelectorAll('[data-go]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();go(a.dataset.go)})});
+document.querySelector('.brand').addEventListener('click',function(e){e.preventDefault();scrollTo({top:0,behavior:RM?'auto':'smooth'})});
+
+// overview line
+var OV=[['Circlo','Sports app and coach marketplace'],['Plazas','Hire AI employees'],['Dogo','Family app for a shared dog'],['Samuels','Jewelry brand'],['Dira','Rent tracker'],['Lantern','Surveys with an AI avatar']];
+var ol=$('line');
+OV.forEach(function(o,i){var li=document.createElement('li'),b=document.createElement('button');b.type='button';b.innerHTML='<i>'+(i+1)+'</i><b>'+o[0]+'</b><small>'+o[1]+'</small>';b.addEventListener('click',function(){go('p'+i)});li.appendChild(b);ol.appendChild(li)});
+
+// project films play only while they are on screen
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;
+    if(e.isIntersecting&&!RM){if(!v.src)v.src=v.dataset.src;var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()})},{threshold:.35});
+  document.querySelectorAll('.media video').forEach(function(v){io.observe(v)});
+}
+$('copy').addEventListener('click',function(){var b=this,ok=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1400)};function sel(){var r=document.createRange();r.selectNodeContents(document.querySelector('#mail span'));var s=getSelection();s.removeAllRanges();s.addRange(r)}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText('guyavnaim5@gmail.com').then(ok).catch(sel);else sel()});
+})();
+</script>

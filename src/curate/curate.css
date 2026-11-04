@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@theme {
+  --color-background: #fffbf3;
+  --color-foreground: #101223;
+  --color-card: #ffffff;
+  --color-muted-foreground: #5b5e73;
+  --color-accent-blue: #2f5bff;
+  --color-accent-emerald: #1f9d6b;
+  --font-bagel: "Bricolage Grotesque", sans-serif;
+}
