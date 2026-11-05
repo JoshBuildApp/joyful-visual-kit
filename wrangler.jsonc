@@ -7,6 +7,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "workers_dev": true,
+  // What the admin changes: pieces taken off the Archive and edited text.
+  // Pictures and films uploaded in admin.
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "guyavnaim-media" }],
+  "kv_namespaces": [{ "binding": "SITE", "id": "924c6a3f13e240c29a6f4d15cc9cd674" }],
   "routes": [
     { "pattern": "guyavnaim.com", "custom_domain": true },
     { "pattern": "www.guyavnaim.com", "custom_domain": true }

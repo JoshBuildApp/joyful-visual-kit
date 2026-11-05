@@ -144,17 +144,45 @@ export const PROJECTS: Project[] = [
       { src: '/media/work/lantern-28.jpg', alt: 'A Lantern survey in progress' },
     ],
   },
+  {
+    slug: 'off-plan',
+    name: 'Off Plan',
+    blurb: 'Websites, renders and film for real estate',
+    lead: ['Sell the building before it exists.', 'A website, renders and film for upcoming projects.'],
+    chips: ['Demo site', 'Nov 2026', 'Working name'],
+    colors: { bg: '#14120F', fg: '#F4EFE6', ac: '#D9A566', chip: 'rgba(244,239,230,.14)', mbg: '#14120F' },
+    film: { src: '/u/0abb2fd9-f561-4e88-9bbe-24ce6e83d57f.mp4', poster: '/media/offplan-film.jpg', label: 'Off Plan film', shape: 'land' },
+    body: [
+      'Off Plan builds the whole pre-sale presence of an upcoming project. Buyers pick a floor on the facade, fly through the window and walk through the home, on a fast site in Hebrew and English.',
+      'The projects on the demo site are fictional and every render is AI-generated, so a developer can see the whole method before starting on a real building.',
+    ],
+    facts: [
+      { label: 'Status', value: 'Demo site. The name is a working title.' },
+      { label: 'Role', value: 'Founder. Everything' },
+      { label: 'Built with', value: 'HTML, CSS, JavaScript, AI image and video models' },
+    ],
+    links: [{ label: 'Open Off Plan', href: 'https://off-plan.guyavnaim5.workers.dev' }],
+    shots: [
+      { src: '/media/work/offplan-aerial.jpg', alt: 'A fictional project from the air' },
+      { src: '/media/work/offplan-living.jpg', alt: 'A fictional living room' },
+      { src: '/media/work/offplan-kitchen.jpg', alt: 'A fictional kitchen' },
+      { src: '/media/work/offplan-bedroom.jpg', alt: 'A fictional bedroom' },
+      { src: '/media/work/offplan-balcony.jpg', alt: 'A fictional balcony' },
+    ],
+  },
 ]
 
-export const LAB = [
+export type LabItem = { name: string; what: string; status: string; href?: string }
+export type Clip = { f: string; t: string; b: string; fg: string; co: number; n: string; src?: string; poster?: string }
+
+export const LAB: LabItem[] = [
   { name: 'Tickworks', what: 'A cozy browser game. Build a watch, pass micro-tasks, collect.', status: 'Playable', href: 'https://tickworks.higgsfield.app' },
   { name: 'Liftoff', what: 'A social platform for discovering and joining early startups.', status: 'Demo on seeded data' },
   { name: 'Night Shift', what: 'A compute marketplace where people share idle GPU and CPU for allowlisted AI jobs.', status: 'Paused prototype' },
   { name: 'LaunchKit', what: 'Open-source Claude Code skills for building and launching a website.', status: 'On GitHub', href: 'https://github.com/JoshBuildApp/launchkit' },
 ]
 
-export const CLIPS = [
-  { f: '03_tel_aviv_dawn', t: '#9FC4E8', b: '#F2CDB2', fg: '#101223', co: 0.95, n: 'Tel Aviv, dawn' },
+export const CLIPS: Clip[] = [
   { f: '05_villa', t: '#8FA8CC', b: '#E3BCA8', fg: '#101223', co: 0.85, n: 'Villa' },
   { f: '04_aerial_forest', t: '#BFD6DE', b: '#DDE0D2', fg: '#101223', co: 0.9, n: 'Forest' },
   { f: '06_stone_arches', t: '#26100B', b: '#A5541A', fg: '#FFF4E6', co: 0.08, n: 'Stone arches' },
@@ -162,4 +190,5 @@ export const CLIPS = [
   { f: '08_space', t: '#060A1C', b: '#1C2F55', fg: '#FFFFFF', co: 0, n: 'Orbit' },
   { f: '02_studio_at_rest', t: '#E8D2AE', b: '#B99B78', fg: '#101223', co: 0.55, n: 'Studio' },
   { f: '01_ink_on_paper', t: '#EFE7D6', b: '#D9CFBC', fg: '#101223', co: 0.6, n: 'Ink on paper' },
+  { f: '03_tel_aviv_dawn', t: '#9FC4E8', b: '#F2CDB2', fg: '#101223', co: 0.95, n: 'Tel Aviv, dawn' },
 ]
