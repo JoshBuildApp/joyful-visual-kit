@@ -7,7 +7,11 @@ export const SITES: SiteWork[] = [
   { id: 'plazas', name: 'Plazas', url: 'https://plazas.ai', what: 'The front door of Plazas, where a business hires AI employees.', kind: 'Live product', shot: '/media/archive/plazas.webp', w: 1000, h: 2389, slug: 'plazas' },
   { id: 'lantern', name: 'Lantern', url: 'https://meetlantern.pages.dev', what: 'Surveys that talk with you, run by an AI avatar.', kind: 'Live demo', shot: '/media/archive/lantern.webp', w: 1000, h: 2292, slug: 'lantern' },
   { id: 'circlo-plaza', name: 'Circlo on Plazas', url: 'https://plazas.ai/p/circlo', what: 'The public page Plazas gives a business, here the one for Circlo.', kind: 'Made by Plazas', shot: '/media/archive/circlo-plaza.webp', w: 1000, h: 1176 },
-  { id: 'tickworks', name: 'Tickworks', url: 'https://tickworks.higgsfield.app', what: 'A cozy browser game about building a watch.', kind: 'Playable', shot: '/media/archive/tickworks.webp', w: 1000, h: 625 },
+  // Ready-made websites for fictional businesses (2026-11-06). The same pages are the templates a Plazas owner can start from.
+  { id: 'tpl-ochre', name: 'Ochre', url: 'https://guyavnaim.com/templates/ochre/en/', what: 'A café and tea bar. The name is set huge across the page with the cup standing in front of it.', kind: 'Template', shot: '/media/archive/tpl-ochre.webp', w: 1000, h: 2362 },
+  { id: 'tpl-rally', name: 'Rally', url: 'https://guyavnaim.com/templates/rally/en/', what: 'A padel and tennis club. A photo in motion, tinted blue, with streaks of yellow light.', kind: 'Template', shot: '/media/archive/tpl-rally.webp', w: 1000, h: 2529 },
+  { id: 'tpl-nami', name: 'Nami', url: 'https://guyavnaim.com/templates/nami/en/', what: 'A movement studio. A pale, quiet page with light type and one photo standing like an object.', kind: 'Template', shot: '/media/archive/tpl-nami.webp', w: 1000, h: 2356 },
+  { id: 'tpl-linden', name: 'Linden', url: 'https://guyavnaim.com/templates/linden/en/', what: 'A small real-estate office. A magazine split beside a black-and-white photo crossed by one line of light.', kind: 'Template', shot: '/media/archive/tpl-linden.webp', w: 1000, h: 2314 },
 ]
 
 // From the Plazas database, 5 November 2026. Every owner's plazas added up, with no customer's data.
@@ -54,7 +58,6 @@ export const SYSTEMS: System[] = [
   { id: 'nightshift', name: 'Night Shift', what: 'A compute marketplace where people share idle GPU and CPU for allowlisted AI jobs.', status: 'Paused prototype', from: 2, to: 2, count: '158', color: '#0E4A3A' },
   { id: 'launchkit', name: 'LaunchKit', what: 'Open-source Claude Code skills for building and launching a website.', status: 'On GitHub', from: 3, to: 3, count: '3', color: '#FF5A3C', href: 'https://github.com/JoshBuildApp/launchkit' },
   { id: 'liftoff', name: 'Liftoff', what: 'A social platform for discovering and joining early startups.', status: 'Demo on seeded data', from: 3, to: 3, count: '200', color: '#2F5BFF' },
-  { id: 'tickworks', name: 'Tickworks', what: 'A cozy browser game. Build a watch, pass micro-tasks, collect.', status: 'Playable', from: 4, to: 4, count: '8', color: '#B4611F', href: 'https://tickworks.higgsfield.app' },
   { id: 'lantern', name: 'Lantern', what: 'Surveys with an AI avatar', status: 'Live demo', from: 5, to: 8, count: '73', color: '#3A30F2', stack: 'React, Cloudflare Workers and D1, Anthropic, Tavus, OpenAI voice', slug: 'lantern' },
   { id: 'dogo', name: 'Dogo', what: 'Family app for a shared dog', status: 'In active build', from: 6, to: 8, count: '61', color: '#F2A900', stack: 'Expo, React Native, Supabase', slug: 'dogo' },
   { id: 'plazas', name: 'Plazas', what: 'Hire AI employees', status: 'Live, working prototype', from: 7, to: 8, count: '517', color: '#101223', stack: 'TanStack Start, Cloudflare Workers, Supabase, Three.js, Capacitor', slug: 'plazas' },
