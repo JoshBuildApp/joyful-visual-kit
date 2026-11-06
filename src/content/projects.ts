@@ -176,7 +176,6 @@ export type LabItem = { name: string; what: string; status: string; href?: strin
 export type Clip = { f: string; t: string; b: string; fg: string; co: number; n: string; src?: string; poster?: string }
 
 export const LAB: LabItem[] = [
-  { name: 'Tickworks', what: 'A cozy browser game. Build a watch, pass micro-tasks, collect.', status: 'Playable', href: 'https://tickworks.higgsfield.app' },
   { name: 'Liftoff', what: 'A social platform for discovering and joining early startups.', status: 'Demo on seeded data' },
   { name: 'Night Shift', what: 'A compute marketplace where people share idle GPU and CPU for allowlisted AI jobs.', status: 'Paused prototype' },
   { name: 'LaunchKit', what: 'Open-source Claude Code skills for building and launching a website.', status: 'On GitHub', href: 'https://github.com/JoshBuildApp/launchkit' },
